@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.poly.dao.DrinkDAO;
 import com.poly.entity.Drink;
+import com.poly.service.DrinkService;
 
 @Controller
 public class DrinkController {
 
 	@Autowired
-	DrinkDAO drinkDAO;
+	DrinkService drinkService;
 	
 	@GetMapping("drink/{id}")
 	public String getProductDetail(@PathVariable("id") Integer id, Model model) {
 		
-		Drink drink = drinkDAO.findById(id).get();
+		Drink drink = drinkService.findById(id);
 		model.addAttribute("drink", drink);
 		
 		return "user/detail";
@@ -29,6 +29,6 @@ public class DrinkController {
 	
 	@ModelAttribute("drinks")
 	public List<Drink> getDrinks() {
-		return drinkDAO.findAll();
+		return drinkService.findAll();
 	}
 }

@@ -8,64 +8,96 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.poly.dao.DrinkDAO;
 import com.poly.entity.Drink;
-import com.poly.model.CartItem;
-import com.poly.service.CartService;
+import com.poly.entity.ShoppingCart;
+import com.poly.entity.User;
+import com.poly.service.DrinkService;
+import com.poly.service.ShoppingCartService;
+import com.poly.service.UserService;
+import com.poly.utils.SessionService;
 
 @Controller
 public class CartController {
 
 	@Autowired
-	DrinkDAO drinkDAO;
+	UserService userService;
 
 	@Autowired
-	CartService cartService;
+	DrinkService drinkService;
+
+	@Autowired
+	ShoppingCartService cartService;
+
+	@Autowired
+	SessionService sessionService;
 
 	@GetMapping("cart")
 	public String getCart(Model model) {
 
-		model.addAttribute("cart", cartService.getItems());
-		model.addAttribute("amount", cartService.getAmount());
-		model.addAttribute("count", cartService.getCount());
+		User currentUser = sessionService.getAttribute("currentUser");
+
+		if (currentUser == null) {
+			return "redirect:/account/login";
+		}
+
+		User user = userService.findById(currentUser.getUsername());
+
+		ShoppingCart cart = user.getCart();
+
+		model.addAttribute("cart", cart);
+		
+		sessionService.setAttribute("totalItems", cart.getTotalItems());
 
 		return "user/cart";
 	}
 
 	@GetMapping("cart/add/{id}")
-	public String addCartItem(@PathVariable("id") Integer id) {
+	public String addCartItem(Model model, @PathVariable("id") Integer id) {
+
+		Drink drink = drinkService.findById(id);
+
+		User currentUser = sessionService.getAttribute("currentUser");
+		User user = userService.findById(currentUser.getUsername());
 		
-		Drink drink = drinkDAO.findById(id).get();
-		
-		if (drink != null) {
-			CartItem cartItem = new CartItem();
-			
-			cartItem.setId(drink.getId());
-			cartItem.setName(drink.getName());
-			cartItem.setPrice(drink.getPrice());
-			cartItem.setImage(drink.getDrinkImage());
-			
-			cartService.add(cartItem);
-		}
-		
-		return "redirect:/cart";
-	}
-	
-	@GetMapping("cart/delete/{id}")
-	public String deleteCartItem(@PathVariable("id") Integer id) {
-		cartService.remove(id);
-		return "redirect:/cart";
-	}
-	
-	@GetMapping("cart/clear")
-	public String clearCart() {
-		cartService.clear();
+		ShoppingCart cart = cartService.addItemToCart(drink, 1, user);
+		model.addAttribute("cart", cart);
+
 		return "redirect:/cart";
 	}
 	
 	@PostMapping("cart/update")
-	public String updateCartItem(@RequestParam("id") Integer id, @RequestParam("quantity") Integer quantity) {
-		cartService.update(id, quantity);
+	public String updateCartItem(Model model, @RequestParam("id") Integer id, @RequestParam("quantity") Integer quantity) {
+
+		Drink drink = drinkService.findById(id);
+
+		User currentUser = sessionService.getAttribute("currentUser");
+		User user = userService.findById(currentUser.getUsername());
+		
+		ShoppingCart cart = cartService.updateCart(drink, quantity, user);
+		model.addAttribute("cart", cart);
+		
 		return "redirect:/cart";
 	}
+
+	@GetMapping("cart/delete/{id}")
+	public String deleteCartItem(Model model, @PathVariable("id") Integer id) {
+
+		Drink drink = drinkService.findById(id);
+
+		User currentUser = sessionService.getAttribute("currentUser");
+		User user = userService.findById(currentUser.getUsername());
+		
+		ShoppingCart cart = cartService.deleteItemFromCart(drink, user);
+		model.addAttribute("cart", cart);
+		
+		return "redirect:/cart";
+	}
+
+	@GetMapping("cart/clear")
+	public String clearCart() {
+
+		return "redirect:/cart";
+	}
+
+	
 }

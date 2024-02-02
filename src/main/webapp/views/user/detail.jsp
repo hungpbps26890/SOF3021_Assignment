@@ -21,13 +21,13 @@
       
       	<section class="tm-section">
           <div class="row">
-            <div class="col-lg-12 tm-section-header-container row">
+            <div class="col-lg-12 tm-section-header-container">
               <h2 class="tm-section-header gold-text" style="width:100%"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"> ${drink.name }</h2> 
-              
-            </div>  
+            </div>
+            <div class="tm-hr-container col-lg-12"><hr class="tm-hr"></div>  
           </div>          
-          <div class="row">
-            <div class="tm-daily-menu-container margin-top-60">
+          <div class="row tm-product" style="margin-left: 0; max-width: 100%; align-items: flex-start; border-radius: 10px">
+            <div class="tm-daily-menu-container">
               <div class="col-lg-6 col-md-6">
                 <img src="/images/${drink.drinkImage}" alt="Menu board" class="tm-daily-menu-img img-thumbnail">      
               </div>            

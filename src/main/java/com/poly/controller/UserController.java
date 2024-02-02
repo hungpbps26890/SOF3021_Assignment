@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.poly.dao.UserDAO;
 import com.poly.entity.User;
+import com.poly.service.UserService;
 import com.poly.utils.CookieService;
 import com.poly.utils.ParamService;
 import com.poly.utils.SessionService;
@@ -30,7 +30,7 @@ public class UserController {
 	SessionService sessionService;
 	
 	@Autowired
-	UserDAO userDAO;
+	UserService userService;
 
 	@GetMapping("account/login")
 	public String getLogin(Model model) {
@@ -39,7 +39,7 @@ public class UserController {
 		User user = new User();
 		
 		if (username != null) {
-			user = userDAO.findById(username.getValue()).get();
+			user = userService.findById(username.getValue());
 		}
 		
 		model.addAttribute("user", user);
@@ -59,7 +59,7 @@ public class UserController {
 			
 			try {
 				
-				user = userDAO.findById(username).get();
+				user = userService.findById(username);
 				
 				if (user != null && user.getPassword().equals(password)) {
 					if (remember == true) {
@@ -120,13 +120,13 @@ public class UserController {
 		} else {
 			User currentUser = sessionService.getAttribute("currentUser");
 			
-			User updatedUser = userDAO.findById(currentUser.getUsername()).get();
+			User updatedUser = userService.findById(currentUser.getUsername());
 			
 			updatedUser.setFirstName(user.getFirstName());
 			updatedUser.setLastName(user.getLastName());
 			updatedUser.setEmail(user.getEmail());
 
-			userDAO.save(updatedUser);
+			userService.save(updatedUser);
 
 			model.addAttribute("message", "Update profile successfully!");
 

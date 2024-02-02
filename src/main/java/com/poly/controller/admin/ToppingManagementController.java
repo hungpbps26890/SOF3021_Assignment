@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.poly.dao.ToppingDAO;
 import com.poly.entity.Topping;
+import com.poly.service.ToppingService;
 
 import jakarta.validation.Valid;
 
@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 public class ToppingManagementController {
 
 	@Autowired
-	ToppingDAO toppingDAO;
+	ToppingService toppingService;
 
 	boolean edit = false;
 
@@ -39,7 +39,7 @@ public class ToppingManagementController {
 
 	@ModelAttribute("toppings")
 	public List<Topping> getToppings() {
-		return toppingDAO.findAll();
+		return toppingService.findAll();
 	}
 
 	@PostMapping("admin/topping")
@@ -55,13 +55,13 @@ public class ToppingManagementController {
 				model.addAttribute("message", "Update topping successfully");
 			}
 
-			toppingDAO.save(topping);
+			toppingService.save(topping);
 
 			topping = new Topping();
 			model.addAttribute("topping", topping);
 		}
 
-		List<Topping> toppings = toppingDAO.findAll();
+		List<Topping> toppings = toppingService.findAll();
 		model.addAttribute("toppings", toppings);
 
 		edit = false;
@@ -73,7 +73,7 @@ public class ToppingManagementController {
 	@GetMapping(value = "admin/topping", params = "btnEdit")
 	public String edit(Model model, @RequestParam("id") Integer id) {
 
-		Topping topping = toppingDAO.findById(id).get();
+		Topping topping = toppingService.findById(id);
 		model.addAttribute("topping", topping);
 
 		edit = true;
@@ -85,7 +85,7 @@ public class ToppingManagementController {
 	@PostMapping("admin/topping/delete/{id}")
 	public String delete(@PathVariable("id") Integer id) {
 
-		toppingDAO.deleteById(id);
+		toppingService.deleteById(id);
 
 		return "redirect:/admin/topping";
 	}
@@ -93,7 +93,7 @@ public class ToppingManagementController {
 	@GetMapping(value = "admin/topping", params = "btnDel")
 	public String deleteInline(@RequestParam("id") Integer id, Model model) {
 
-		toppingDAO.deleteById(id);
+		toppingService.deleteById(id);
 
 		return "redirect:/admin/topping";
 	}

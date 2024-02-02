@@ -41,7 +41,7 @@
             <div class="tm-menu-product-content col-lg-9 col-md-9"> <!-- menu content -->
               
               <c:forEach var="drink" items="${drinks}">
-              	<div class="tm-product row">
+              	<div class="tm-product row" style="border-radius: 10px">
               		<div class="col-md-4">
               			<img src="/images/${drink.drinkImage}" class="img-thumbnail">
               		</div>

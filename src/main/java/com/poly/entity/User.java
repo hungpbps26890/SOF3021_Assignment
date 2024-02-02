@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -63,26 +65,10 @@ public class User implements Serializable {
 	private List<UserAddress> userAddresses;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Order> orders;
 
-	public User(@NotEmpty(message = "{NotEmpty.user.username}") String username,
-			@NotEmpty(message = "{NotEmpty.user.password}") String password,
-			@NotEmpty(message = "{NotEmpty.user.firstName}") String firstName,
-			@NotEmpty(message = "{NotEmpty.user.lastName}") String lastName,
-			@NotEmpty(message = "{NotEmpty.user.phoneNumber}") String phoneNumber,
-			@NotEmpty(message = "{NotEmpty.user.email}") @Email(message = "{Email.user.email}") String email,
-			@NotNull(message = "{NotNull.user.admin}") Boolean admin,
-			@NotNull(message = "{NotNull.user.active}") Boolean active) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.admin = admin;
-		this.active = active;
-	}
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private ShoppingCart cart;
 
 }

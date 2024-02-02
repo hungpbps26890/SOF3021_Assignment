@@ -26,19 +26,19 @@
           </div>
           <div> 
             <div class="tm-menu-product-content col-lg-12 col-md-12"> <!-- menu content -->
-              <c:forEach var="item" items="${cart}">
+              <c:forEach var="item" items="${cart.cartItems}">
               	<form action="/cart/update" method="post">
-              		<input type="hidden" name="id" value="${item.id}">
-              		<div class="tm-product row" style="margin-left: 0; max-width: 100%">
-	              		<div class="col-md-4">
-	              			<img src="/images/${item.image}" class="img-thumbnail">
+              		<input type="hidden" name="id" value="${item.drink.id}">
+              		<div class="tm-product row" style="margin-left: 0; max-width: 100%; align-items: flex-start; border-radius: 10px">
+	              		<div class="col-md-3">
+	              			<img src="/images/${item.drink.drinkImage}" class="img-thumbnail">
 	              		</div>
 		                
-		                <div class="tm-product-text col-md-6">
-		                  <a href="/drink/${item.id}" style="text-decoration: none;">
-		                  	<h3 class="tm-product-title">${item.name}</h3>
+		                <div class="tm-product-text col-md-7">
+		                  <a href="/drink/${item.drink.id}" style="text-decoration: none;">
+		                  	<h3 class="tm-product-title">${item.drink.name}</h3>
 		                  </a>
-		                  <h4 class="tm-product-description">${item.price * item.quantity} đ</h4>
+		                  <h4 class="tm-product-description">${item.unitPrice * item.quantity} đ</h4>
 		                  <input
 			                type="number"
 			                class="form-control"
@@ -50,7 +50,7 @@
 			              />
 		                </div>
 		                <div class="tm-product-price col-md-2">
-		                  <a href="cart/delete/${item.id}" class="tm-product-price-link tm-handwriting-font" style="padding: 24px 14px;">Delete</a>
+		                  <a href="cart/delete/${item.drink.id}" class="tm-product-price-link tm-handwriting-font" style="padding: 24px 14px;">Delete</a>
 		                </div>
 		              </div>
               	</form>
@@ -58,18 +58,13 @@
             </div>
 
 		    <div class="col-lg-12 tm-section-header-container margin-bottom-30">
-	            <h2 class="tm-section-header gold-text tm-handwriting-font" style="width: 100%"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"> Total (${count} product): ${amount} <span class="tm-handwriting-font gold-text" style="font-size: 20px">đ</span></h2>
+	            <h2 class="tm-section-header gold-text tm-handwriting-font" style="width: 100%"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"> Total (${cart.totalItems} product): ${cart.totalPrice} <span class="tm-handwriting-font gold-text" style="font-size: 20px">đ</span></h2>
 	          </div>
             
             <div class="col-lg-12 row">
               	<div class="col-md-3">
-              		<button class="tm-more-button">CHECK OUT</button> 
+              		<a class="tm-more-button" href="/checkout">CHECK OUT</a> 
               	</div>
-              		
-              	<div class="col-md-3">
-              		<a class="tm-more-button" href="/cart/clear">CLEAR CART</a> 
-              	</div>
-                
               </div>               
             </div>
           </div>          

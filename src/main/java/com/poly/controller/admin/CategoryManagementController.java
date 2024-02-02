@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.poly.dao.CategoryDAO;
 import com.poly.entity.Category;
+import com.poly.service.CategoryService;
 
 import jakarta.validation.Valid;
 
@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 public class CategoryManagementController {
 
 	@Autowired
-	CategoryDAO categoryDAO;
+	CategoryService categoryService;
 	
 	boolean edit = false;
 
@@ -39,7 +39,7 @@ public class CategoryManagementController {
 
 	@ModelAttribute("categories")
 	public List<Category> getCategories() {
-		return categoryDAO.findAll();
+		return categoryService.findAll();
 	}
 
 	@PostMapping("admin/category")
@@ -55,13 +55,13 @@ public class CategoryManagementController {
 				model.addAttribute("message", "Update category successfully");
 			}
 			
-			categoryDAO.saveAndFlush(category);
+			categoryService.save(category);
 			
 			category = new Category();
 			model.addAttribute("category", category);
 		}
 		
-		List<Category> categories = categoryDAO.findAll();
+		List<Category> categories = categoryService.findAll();
 		model.addAttribute("categories", categories);
 		
 		edit = false;
@@ -72,7 +72,7 @@ public class CategoryManagementController {
 
 	@GetMapping(value = "admin/category", params = "btnEdit")
 	public String edit(Model model, @RequestParam("id") Integer id) {
-		Category category = categoryDAO.findById(id).get();
+		Category category = categoryService.findById(id);
 		model.addAttribute("category", category);
 		
 		edit = true;
@@ -84,14 +84,14 @@ public class CategoryManagementController {
 	@PostMapping("admin/category/delete/{id}")
 	public String delete(@PathVariable("id") Integer id) {
 
-		categoryDAO.deleteById(id);
+		categoryService.deleteById(id);
 
 		return "redirect:/admin/category";
 	}
 
 	@GetMapping(value = "admin/category", params = "btnDel")
 	public String deleteInline(@RequestParam("id") Integer id, Model model) {
-		categoryDAO.deleteById(id);
+		categoryService.deleteById(id);
 
 		return "redirect:/admin/category";
 	}

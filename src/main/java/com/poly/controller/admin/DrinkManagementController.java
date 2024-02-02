@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.poly.dao.CategoryDAO;
-import com.poly.dao.DrinkDAO;
 import com.poly.entity.Category;
 import com.poly.entity.Drink;
+import com.poly.service.CategoryService;
+import com.poly.service.DrinkService;
 import com.poly.utils.UploadService;
 
 import jakarta.validation.Valid;
@@ -26,10 +26,10 @@ import jakarta.validation.Valid;
 public class DrinkManagementController {
 
 	@Autowired
-	DrinkDAO drinkDAO;
+	DrinkService drinkService;
 
 	@Autowired
-	CategoryDAO categoryDAO;
+	CategoryService categoryService;
 
 	@Autowired
 	UploadService uploadService;
@@ -42,7 +42,7 @@ public class DrinkManagementController {
 		Drink drink = new Drink();
 		model.addAttribute("drink", drink);
 
-		List<Drink> drinks = drinkDAO.findAll();
+		List<Drink> drinks = drinkService.findAll();
 		model.addAttribute("drinks", drinks);
 
 		edit = false;
@@ -53,12 +53,12 @@ public class DrinkManagementController {
 	
 	@ModelAttribute("drinks")
 	public List<Drink> getDrinks() {
-		return drinkDAO.findAll();
+		return drinkService.findAll();
 	}
 
 	@ModelAttribute("categories")
 	public List<Category> getCategories() {
-		return categoryDAO.findAll();
+		return categoryService.findAll();
 	}
 
 	@PostMapping("admin/drink")
@@ -73,7 +73,7 @@ public class DrinkManagementController {
 			uploadService.save(photo, "/images/");
 			drink.setDrinkImage(fileName);
 
-			Category category = categoryDAO.findById(drink.getCategory().getId()).get();
+			Category category = categoryService.findById(drink.getCategory().getId());
 			drink.setCategory(category);
 
 			if (drink.getId() == null) {
@@ -82,13 +82,13 @@ public class DrinkManagementController {
 				model.addAttribute("message", "Update drink successfully");
 			}
 
-			drink = drinkDAO.save(drink);
+			drink = drinkService.save(drink);
 
 			drink = new Drink();
 			model.addAttribute("drink", drink);
 		}
 
-		List<Drink> drinks = drinkDAO.findAll();
+		List<Drink> drinks = drinkService.findAll();
 		model.addAttribute("drinks", drinks);
 
 		edit = false;
@@ -99,7 +99,7 @@ public class DrinkManagementController {
 
 	@GetMapping(value = "admin/drink", params = "btnEdit")
 	public String edit(Model model, @RequestParam("id") Integer id) {
-		Drink drink = drinkDAO.findById(id).get();
+		Drink drink = drinkService.findById(id);
 		model.addAttribute("drink", drink);
 
 		edit = true;
@@ -110,14 +110,14 @@ public class DrinkManagementController {
 
 	@PostMapping("admin/delete/delete/{id}")
 	public String delete(@PathVariable("id") Integer id) {
-		drinkDAO.deleteById(id);
+		drinkService.deleteById(id);
 
 		return "redirect:/admin/drink";
 	}
 
 	@GetMapping(value = "admin/drink", params = "btnDel")
 	public String deleteInline(@RequestParam("id") Integer id) {
-		drinkDAO.deleteById(id);
+		drinkService.deleteById(id);
 
 		return "redirect:/admin/drink";
 	}

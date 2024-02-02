@@ -6,8 +6,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,10 +40,10 @@ public class Order implements Serializable {
 	
 	private Boolean paymentStatus = false;
 	
-	private Double total;
+	private Double totalPrice;
 	
-	@ManyToOne
-	@JoinColumn(name = "username")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 	
 	@ManyToOne
@@ -57,7 +59,7 @@ public class Order implements Serializable {
 	PaymentMethod paymentMethod;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderDetail> orderDetails;
 
 }
