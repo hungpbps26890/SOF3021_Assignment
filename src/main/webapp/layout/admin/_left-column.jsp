@@ -18,9 +18,11 @@
           </div>
         <nav class="templatemo-left-nav">          
           <ul>
+            <li><a href="/home"><i class="fa fa-users fa-fw"></i>Homepage</a></li>
+            <li><a href="/admin/order"><i class="fa fa-users fa-fw"></i>Manage Order</a></li>
+            <li><a href="/admin/drink"><i class="fa fa-users fa-fw"></i>Manage Drink</a></li>
             <li><a href="/admin/category"><i class="fa fa-users fa-fw"></i>Manage Category</a></li>
             <li><a href="/admin/topping"><i class="fa fa-users fa-fw"></i>Manage Topping</a></li>
-            <li><a href="/admin/drink"><i class="fa fa-users fa-fw"></i>Manage Drink</a></li>
           </ul>  
         </nav>
       </div>

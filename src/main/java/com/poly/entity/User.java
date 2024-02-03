@@ -30,7 +30,7 @@ import lombok.Setter;
 public class User implements Serializable {
 
 	@Id
-	@Column(columnDefinition = "varchar(10)")
+	@Column(columnDefinition = "varchar(100)")
 	@NotEmpty(message = "{NotEmpty.user.username}")
 	private String username;
 

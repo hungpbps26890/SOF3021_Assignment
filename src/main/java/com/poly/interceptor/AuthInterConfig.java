@@ -12,7 +12,7 @@ public class AuthInterConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authInterceptor).addPathPatterns("/account/**", "/admin/**", "/cart/**")
-				.excludePathPatterns("/assets/**", "/account/login", "/account/register", "/account/forgot-password", "/mailer");
+		registry.addInterceptor(authInterceptor).addPathPatterns("/account/**", "/admin/**", "/cart/**", "/order/**")
+				.excludePathPatterns("/assets/**", "/account/login", "/account/register");
 	}
 }

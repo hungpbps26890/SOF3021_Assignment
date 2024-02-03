@@ -23,6 +23,7 @@
             </div>
             <nav class="tm-nav">
               <ul>
+                
                 <li><a href="/home" class="active">Home</a></li>
                 <li><a href="/menu">Menu</a></li>
                 
@@ -31,8 +32,10 @@
                 		<li><a href="/cart" >
 		               		Cart <c:if test="${sessionScope.totalItems != 0}">(<span style="font-size: 12px">${sessionScope.totalItems}</span>)</c:if> 
 		               	</a></li>
-                		<li><a href="/account/logout">Log out</a></li>
+		               	<li><a href="/order">Order</a></li>
+                		
                 		<li><a href="/account/profile">Welcome, ${sessionScope.currentUser.firstName}</a></li>
+                		<li><a href="/account/logout">Log out</a></li>
                 	</c:when>
                 	<c:otherwise>
                 		<li><a href="/account/register">Register</a></li>

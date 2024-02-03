@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import com.poly.dao.CartItemDAO;
 import com.poly.dao.ShoppingCartDAO;
@@ -135,14 +134,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 	public void deleteCartById(Long id) {
 		ShoppingCart cart = shoppingCartDAO.findById(id).get();
 		
-		if (!ObjectUtils.isEmpty(cart) && !ObjectUtils.isEmpty(cart.getCartItems())) {
-			cartItemDAO.deleteAll(cart.getCartItems());
-		}
+		Set<CartItem> cartItems = cart.getCartItems();
 		
-		cart.getCartItems().clear();
-		cart.setTotalItems(0);
-		cart.setTotalPrice(0.0);
+		cartItemDAO.deleteAll(cartItems);
+		
+		cartItems.clear();
+		
+		cart.setCartItems(cartItems);
+		
 		shoppingCartDAO.save(cart);
+		
 	}
 
 	private CartItem findCartItem(Set<CartItem> cartItems, Integer drinkId) {
@@ -180,6 +181,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		}
 
 		return totalPrice;
+	}
+
+	@Override
+	public ShoppingCart createNewShoppingcart(User user) {
+		ShoppingCart cart = new ShoppingCart();
+		cart.setUser(user);
+		return shoppingCartDAO.save(cart);
 	}
 
 	

@@ -102,6 +102,9 @@ public class CheckoutController {
 			model.addAttribute("user", user);
 
 			ShoppingCart cart = user.getCart();
+			
+			PaymentMethod paymentMethod = paymentMethodDAO.findById(order.getPaymentMethod().getId()).get();
+			order.setPaymentMethod(paymentMethod);
 
 			String[] arrAddress = parseStringAddressToArray(addressString);
 
@@ -116,8 +119,7 @@ public class CheckoutController {
 
 			order.setAddress(address);
 
-			PaymentMethod paymentMethod = paymentMethodDAO.findById(order.getPaymentMethod().getId()).get();
-			order.setPaymentMethod(paymentMethod);
+			
 
 			orderService.saveOrder(cart, order);
 		}

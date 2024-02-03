@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.poly.dao.DrinkDAO;
+import com.poly.entity.Category;
 import com.poly.entity.Drink;
 import com.poly.service.DrinkService;
 
@@ -55,6 +56,11 @@ public class DrinkServiceIpml implements DrinkService{
 		drink.setActive(false);
 		save(drink);
 
+	}
+
+	@Override
+	public List<Drink> findByCategory(Category category) {
+		return drinkDAO.findByCategory(category);
 	}
 	
 	

@@ -21,69 +21,72 @@
        
         <section class="tm-section row">
           
-          <form:form action="/account/profile" method="post" modelAttribute="user" class="tm-contact-form">
+          <form:form action="/account/register" method="post" modelAttribute="registerUser" class="tm-contact-form">
             <div class="col-lg-6 col-md-6 col-md-offset-3">
-              <h2 class="margin-bottom-30">Your Profile</h2>
+              <h2 class="margin-bottom-30">Register</h2>
               <div class="form-group">
-                <form:hidden id="username" class="form-control" placeholder="USERNAME"
-                	path="username" value="${user.username}"
+                <form:input type="text" id="username" class="form-control" placeholder="USERNAME" 
+                	path="username"
                 />
                 <div class="mt-2">
 	              	<form:errors path="username" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
+              <div class="form-group">
+                <form:input type="password" id="password" class="form-control" placeholder="PASSWORD" 
+                	path="password"
+                />
+                <div class="mt-2">
+	              	<form:errors path="password" class="badge text-bg-danger"></form:errors>
+	              </div>
+              </div>
+              <div class="form-group">
+                <input type="password" id="confirmedPassword" class="form-control" placeholder="CONFIRMED PASSWORD" 
+                	name="confirmedPassword" value="${confirmedPassword}"
+                />
+                <div class="mt-2">
+	              	<span class="badge text-bg-danger">${confirmedPasswordErrorMessage}</span>
+	              </div>
+              </div>
               <div class="form-group">
                 <form:input type="text" id="firstName" class="form-control" placeholder="FIRST NAME" 
-                	path="firstName" value="${user.firstName}"
+                	path="firstName"
                 />
                 <div class="mt-2">
 	              	<form:errors path="firstName" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
               <div class="form-group">
                 <form:input type="text" id="lastName" class="form-control" placeholder="LAST NAME" 
-                	path="lastName" value="${user.lastName}"
+                	path="lastName"
                 />
                 <div class="mt-2">
 	              	<form:errors path="lastName" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
               <div class="form-group">
                 <form:input type="text" id="phoneNumber" class="form-control" placeholder="PHONE NUMBER" 
-                	path="phoneNumber" value="${user.phoneNumber}"
+                	path="phoneNumber"
                 />
                 <div class="mt-2">
 	              	<form:errors path="phoneNumber" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
               <div class="form-group">
                 <form:input type="text" id="email" class="form-control" placeholder="EMAIL" 
-                	path="email" value="${user.email}"
+                	path="email"
                 />
                 <div class="mt-2">
 	              	<form:errors path="email" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
 			
 			<div class="mb-3">
-				<span class="text-primary">${message}</span>
+				<span class="text-danger">${errorMessage}</span>
 			</div>
-			
               
-              <div class="form-group row">
-              	<div class="col-md-6">
-              		<button class="tm-more-button" type="submit" name="submit">UPDATE</button> 
-              	</div>
-              		
-              	<div class="col-md-6">
-              		<a class="tm-more-button" href="/acount/change-password">CHANGE PASSWORD</a> 
-              	</div>
-                
+              <div class="form-group">
+                <button class="tm-more-button" type="submit" name="submit">REGISTER</button> 
               </div>               
             </div>
             
