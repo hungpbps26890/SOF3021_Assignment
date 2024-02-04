@@ -15,8 +15,6 @@
   
     <%@ include file="/layout/user/_header.jsp" %>
     
-    <%@ include file="/layout/user/_welcome.jsp" %>
-    
     <div class="tm-main-section light-gray-bg">
       <div class="container" id="main">
                 

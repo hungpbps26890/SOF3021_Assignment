@@ -22,7 +22,7 @@
         <section class="tm-section row">
           
           <form:form action="/account/change-password" method="post" modelAttribute="user" class="tm-contact-form">
-            <div class="col-lg-6 col-md-6 col-md-offset-3">
+            <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
               <h2 class="margin-bottom-30">Change Password</h2>
               <div class="form-group">
                 <form:hidden id="username" class="form-control" placeholder="USERNAME"

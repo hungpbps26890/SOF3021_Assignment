@@ -26,10 +26,13 @@
             <div class="tm-hr-container"><hr class="tm-hr"></div>
           </div>
           <div class="col-lg-12 tm-popular-items-container">
-            <c:forEach var="drink" items="${drinks}">
+            <c:forEach var="drink" items="${drinks.content}">
             	<%@ include file="/layout/user/_drink-item.jsp" %>
             </c:forEach>
-          </div>          
+          </div>
+          <div class="col-lg-12" style="display: flex; justify-content: space-around;">
+          	<a class="tm-more-button" href="/menu">MORE DRINKS</a> 
+          </div>    
         </section>
         
         <%@ include file="/layout/user/_daily_menu.jsp" %>

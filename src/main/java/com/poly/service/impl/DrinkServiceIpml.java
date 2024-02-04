@@ -3,6 +3,7 @@ package com.poly.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -61,6 +62,16 @@ public class DrinkServiceIpml implements DrinkService{
 	@Override
 	public List<Drink> findByCategory(Category category) {
 		return drinkDAO.findByCategory(category);
+	}
+
+	@Override
+	public List<Drink> findRelatedDrink(Category category, Integer id, Limit limit) {
+		return drinkDAO.findRelatedDrink(category, id, limit);
+	}
+
+	@Override
+	public List<Drink> findMore(Limit limit) {
+		return drinkDAO.findMore(limit);
 	}
 	
 	

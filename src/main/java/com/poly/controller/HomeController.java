@@ -1,11 +1,15 @@
 package com.poly.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.entity.Drink;
 import com.poly.entity.ShoppingCart;
@@ -41,15 +45,14 @@ public class HomeController {
 			sessionService.setAttribute("totalItems", 0);
 		}
 
-		
-
-		
 		return "user/index";
 	}
 	
 	@ModelAttribute("drinks")
-	public List<Drink> getDrinks() {
-		return drinkService.findAll();
+	public Page<Drink> getDrinks(@RequestParam("page") Optional<Integer> page) {
+		Pageable pageable = PageRequest.of(page.orElse(0), 12);
+		Page<Drink> drinks = drinkService.findAll(pageable);
+		return drinks;
 	}
 	
 }

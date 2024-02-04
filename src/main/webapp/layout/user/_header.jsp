@@ -24,7 +24,7 @@
             <nav class="tm-nav">
               <ul>
                 
-                <li><a href="/home" class="active">Home</a></li>
+                <li><a href="/home">Home</a></li>
                 <li><a href="/menu">Menu</a></li>
                 
                 <c:choose>

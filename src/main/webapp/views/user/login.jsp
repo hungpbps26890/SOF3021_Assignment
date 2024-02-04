@@ -22,7 +22,7 @@
         <section class="tm-section row">
           
           <form:form action="/account/login" method="post" modelAttribute="user" class="tm-contact-form">
-            <div class="col-lg-6 col-md-6 col-md-offset-3">
+            <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
               <h2 class="margin-bottom-30">Login</h2>
               <div class="form-group">
                 <form:input type="text" id="username" class="form-control" placeholder="USERNAME" 
