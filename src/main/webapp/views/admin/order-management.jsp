@@ -109,6 +109,9 @@
 									<td><a href="" class="white-text templatemo-sort-by">User
 											name<span class="caret"></span>
 									</a></td>
+									<td><a href="" class="white-text templatemo-sort-by">Order
+											Date<span class="caret"></span>
+									</a></td>
 									<td><a href="" class="white-text templatemo-sort-by">Total
 											Price<span class="caret"></span>
 									</a></td>
@@ -128,17 +131,21 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="item" items="${orders}">
+								<c:forEach var="order" items="${orders}">
 									<tr>
-										<td>${item.id}</td>
-										<td>${item.user.username}</td>
-										<td>${item.totalPrice}</td>
-										<td>${item.orderStatus.name}</td>
-										<td>${item.paymentMethod.name}</td>
+										<td>${order.id}</td>
+										<td>${order.user.username}</td>
+										<td> 
+											<fmt:parseDate value="${order.createDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDateTime" type="both" />
+											<fmt:formatDate value="${parsedDateTime}" pattern="d/M/yyyy HH:mm:ss" />
+										</td>
+										<td><fmt:formatNumber type="number" pattern="###,###" value="${order.totalPrice}"/> đ</td>
+										<td>${order.orderStatus.name}</td>
+										<td>${order.paymentMethod.name}</td>
 										
-										<td>${item.paymentStatus ? 'Paid' : 'Not Paid Yet'}</td>
+										<td>${order.paymentStatus ? 'Paid' : 'Not Paid Yet'}</td>
 										
-										<td><a href="/admin/order?btnEdit=&id=${item.id}"
+										<td><a href="/admin/order?btnEdit=&id=${order.id}"
 											class="templatemo-edit-btn">Edit</a></td>
 										
 									</tr>

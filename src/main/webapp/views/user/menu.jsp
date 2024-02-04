@@ -48,7 +48,7 @@
 	                
 	                <div class="tm-product-text col-md-6">
 	                  <h3 class="tm-product-title">${drink.name}</h3>
-	                  <h4 class="tm-product-description">${drink.price} đ</h4>
+	                  <h4 class="tm-product-description"><fmt:formatNumber type="number" pattern="###,###" value="${drink.price}"/> đ</h4>
 	                </div>
 	                <div class="tm-product-price col-md-2">
 	                  <a href="/drink/${drink.id}" class="tm-product-price-link tm-handwriting-font">Order now</a>

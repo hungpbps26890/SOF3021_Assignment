@@ -32,7 +32,7 @@
                 <img src="/images/${drink.drinkImage}" alt="Menu board" class="tm-daily-menu-img img-thumbnail">      
               </div>            
               <div class="col-lg-6 col-md-6">
-                <h3 class="tm-section-header gold-text">${drink.price} đ</h3>
+                <h3 class="tm-section-header gold-text"><fmt:formatNumber type="number" pattern="###,###" value="${drink.price}"/> đ</h3>
                 <p>${drink.description }</p>
                 <a href="/cart/add/${drink.id}" class="tm-more-button margin-top-30">Add to cart</a>    
               </div>
@@ -47,17 +47,7 @@
           </div>
           <div class="col-lg-12 tm-popular-items-container">
             <c:forEach var="drink" items="${drinks}">
-            	<div class="tm-popular-item">
-	              <img src="/images/${drink.drinkImage}" class="img-thumbnail">
-	              
-	              <div class="tm-popular-item-description">
-	                <h3 class="tm-handwriting-font tm-popular-item-title" style="margin-bottom: 7px">${drink.price } <span class="tm-handwriting-font tm-popular-item-title" style="font-size: 20px">đ</span> </h3><hr class="tm-popular-item-hr">
-	                <h4>${drink.name }</h4>
-	                <div class="order-now-container">
-	                  <a href="/drink/${drink.id}" class="order-now-link tm-handwriting-font">Order Now</a>
-	                </div>
-	              </div>              
-	            </div>
+            	<%@ include file="/layout/user/_drink-item.jsp" %>
             </c:forEach>
             
           </div>          

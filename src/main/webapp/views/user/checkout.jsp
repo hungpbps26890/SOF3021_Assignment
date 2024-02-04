@@ -36,7 +36,7 @@
                   <c:forEach var="item" items="${cart.cartItems}">
                   	<div>
 		                  <h4 class="tm-product-title">${item.drink.name }</h4>
-		                  <p class="tm-product-description">Price: ${item.unitPrice} đ |Qty: ${item.quantity} | Sub Total: ${item.unitPrice * item.quantity} đ</p>
+		                  <p class="tm-product-description">Price: <fmt:formatNumber type="number" pattern="###,###" value="${item.unitPrice}"/> đ |Qty: ${item.quantity} | Sub Total: <fmt:formatNumber type="number" pattern="###,###" value="${item.unitPrice * item.quantity}"/> đ</p>
 		                  <hr>
 	                  </div>
                   </c:forEach>
@@ -46,7 +46,7 @@
                   <div class="tm-hr-container"><hr class="tm-hr"></div>
                   <div>
 	                  <div style="display: flex; justify-content: space-between;">
-	                  	<span class="tm-product-title">Sub Total:</span> <span style="margin-left: auto;">${cart.totalPrice} đ</span>
+	                  	<span class="tm-product-title">Sub Total:</span> <span style="margin-left: auto;"><fmt:formatNumber type="number" pattern="###,###" value="${cart.totalPrice}"/> đ</span>
 	                  </div>
 	                  <div style="display: flex; justify-content: space-between;">
 	                  	<span class="tm-product-title">Discount:</span> <span style="margin-left: auto;">0 đ</span>
@@ -61,7 +61,7 @@
                   </div>
                   <div>
 	                  <div style="display: flex; justify-content: space-between;">
-	                  	<b class="tm-product-title">Grand Total:</b> <span style="margin-left: auto;">${cart.totalPrice} đ</span>
+	                  	<b class="tm-product-title">Grand Total:</b> <span style="margin-left: auto;"><fmt:formatNumber type="number" pattern="###,###" value="${cart.totalPrice}"/> đ</span>
 	                  </div>
 	                  <hr>
                   </div>

@@ -57,13 +57,16 @@
 								<c:forEach var="order" items="${orders}">
 									<tr>
 										<td>${order.id}</td>
-										<td>${order.createDate}</td>
+										<td> 
+											<fmt:parseDate value="${order.createDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDateTime" type="both" />
+											<fmt:formatDate value="${parsedDateTime}" pattern="d/M/yyyy HH:mm:ss" />
+										</td>
 										<td>${order.orderStatus.name}</td>
-										<td>${order.totalPrice}</td>
+										<td><fmt:formatNumber type="number" pattern="###,###" value="${order.totalPrice}"/> đ</td>
 										<td>${order.paymentMethod.name}</td>
 										<td>${order.paymentStatus ? 'Paid' : 'Not Paid Yet'}</td>
 										<td><a href="/order/cancel/${order.id}"
-											class="btn btn-danger">Cancel</a></td>
+											class="btn btn-danger ${(order.orderStatus.id == 6 || order.orderStatus.id == 5) ? 'disabled' : ''} ">Cancel</a></td>
 									</tr>
 								</c:forEach>
 								

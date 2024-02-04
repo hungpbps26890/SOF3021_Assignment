@@ -38,7 +38,7 @@
 		                  <a href="/drink/${item.drink.id}" style="text-decoration: none;">
 		                  	<h3 class="tm-product-title">${item.drink.name}</h3>
 		                  </a>
-		                  <h4 class="tm-product-description">${item.unitPrice * item.quantity} đ</h4>
+		                  <h4 class="tm-product-description"> <fmt:formatNumber type="number" pattern="###,###" value="${item.unitPrice * item.quantity}"/> đ</h4>
 		                  <input
 			                type="number"
 			                class="form-control"
@@ -58,7 +58,7 @@
             </div>
 
 		    <div class="col-lg-12 tm-section-header-container margin-bottom-30">
-	            <h2 class="tm-section-header gold-text tm-handwriting-font" style="width: 100%"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"> Total (${cart.totalItems} product): ${cart.totalPrice} <span class="tm-handwriting-font gold-text" style="font-size: 20px">đ</span></h2>
+	            <h2 class="tm-section-header gold-text" style="width: 100%">Total (${cart.totalItems} product): <fmt:formatNumber type="number" pattern="###,###" value="${cart.totalPrice}"/> <span class="gold-text" style="font-size: 24px">đ</span></h2>
 	          </div>
             
             <div class="col-lg-12 row">
