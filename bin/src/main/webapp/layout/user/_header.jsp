@@ -33,6 +33,7 @@
 		               		Cart <c:if test="${sessionScope.totalItems != 0}">(<span style="font-size: 12px">${sessionScope.totalItems}</span>)</c:if> 
 		               	</a></li>
 		               	<li><a href="/order">Order</a></li>
+                		
                 		<li><a href="/account/profile">Welcome, ${sessionScope.currentUser.firstName}</a></li>
                 		<li><a href="/account/logout">Log out</a></li>
                 	</c:when>
