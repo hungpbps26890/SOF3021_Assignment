@@ -26,7 +26,7 @@
 								<h2 class="text-uppercase">Report Management</h2>
 							</div>
 							<div class="panel-body">
-								<form action="/admin/report" class="templatemo-login-form" method="post">
+								<form action="/admin/report/search" class="templatemo-login-form" method="post">
 									<div class="form-group">
 										<select class="form-select" name="day">
 										  <option selected value="0">Day</option>
@@ -34,7 +34,7 @@
 										  <option value="2">2</option>
 										  <option value="3">3</option>
 										</select>
-										<select cass="form-select" name="month">
+										<select class="form-select" name="month">
 										  <option selected value="0">Month</option>
 										  <option value="1">1</option>
 										  <option value="2">2</option>
@@ -48,6 +48,7 @@
 									</div>
 									<div class="form-group">
 										<button type="submit" class="btn templatemo-blue-button">Search</button>
+										<button formaction="/admin/report/print" class="btn templatemo-blue-button">Print Excel</button>
 									</div>
 								</form>
 							</div>
@@ -73,9 +74,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="item" items="${reports}"
+								<c:forEach var="item" items="${pages.content}"
 								varStatus="i" begin="0"
-									end="${reports.size() - 1}">
+									end="${pages.size - 1}">
 									<tr>
 										<td>${i.index + 1}</td>
 										<td>${item.createDate}</td>
@@ -90,17 +91,30 @@
 					</div>
 				</div>
 
-
 				<div class="pagination-wrap">
 					<ul class="pagination">
-						<li><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#" aria-label="Next"> <span
-								aria-hidden="true"><i class="fa fa-play"></i></span>
-						</a></li>
+						<c:choose>
+							<c:when test="${pages.totalPages == 1}">
+								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>			
+							</c:when>
+							<c:when test="${pages.number + 1 == 1 && pages.totalPages != 1}">
+								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
+								<li><a href="/admin/report/page?p=${pages.number + 1}">${pages.number + 2}</a></li>
+								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+							</c:when>
+							<c:when test="${pages.number + 1 == pages.totalPages}">
+								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+								<li><a href="/admin/report/page?p=${pages.number - 1}">${pages.number}</a></li>
+								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="First"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+								<li><a href="/admin/report/page?p=${pages.number - 1}">${pages.number}</a></li>
+								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
+								<li><a href="/admin/report/page?p=${pages.number + 1}">${pages.number + 2}</a></li>
+								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 

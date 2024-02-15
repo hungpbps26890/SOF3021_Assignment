@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.poly.dao.UserDAO;
@@ -49,12 +51,30 @@ public class UserServiceImpl implements UserService{
 		save(user);
 	}
 
+//	@Override
+//	public void delete(User entity) {
+//		User user = findById(entity.getUsername());
+//		user.setActive(false);
+//		save(user);
+//	}
 	@Override
 	public void delete(User entity) {
-		User user = findById(entity.getUsername());
-		user.setActive(false);
-		save(user);
+		save(entity);
 	}
 
+	@Override
+	public Page<User> findByUsernameContainingOrFirstNameContainingOrLastNameContaining(String username, String firstName, String lastName, Pageable pageable) {
+		return userDAO.findByUsernameContainingOrFirstNameContainingOrLastNameContaining(username, firstName, lastName, pageable);
+	}
+	
+	@Override
+	public Page<User> findByPhoneNumberContaining(String phonenumber, Pageable pageable) {
+		return userDAO.findByPhoneNumberContaining(phonenumber, pageable);
+	}
+
+	@Override
+	public Page<User> findByEmailContaining(String email, Pageable pageable) {
+		return userDAO.findByEmailContaining(email, pageable);
+	}
 	
 }
