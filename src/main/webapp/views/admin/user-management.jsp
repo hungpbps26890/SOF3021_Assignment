@@ -27,13 +27,12 @@
 								<form:form action="/admin/user" class="templatemo-login-form"
 									modelAttribute="user" method="post"
 									enctype="multipart/form-data">
-
 									<div class="form-group">
-										<label for="name">Username</label> <input type="text"
-											name="username" class="form-control" id="name"
-											value="${user.username}" disabled="disabled">
+										<label for="name">Username</label> 
+										<form:input type="text"
+											path="username" class="form-control" id="name"
+											value="${user.username}"/>
 									</div>
-
 									<div class="row">
 										<div class="form-group col-lg-6">
 											<label for="name">First Name</label>
@@ -75,15 +74,24 @@
 										</div>
 									</div>
 
+									<div class="form-group">
+										<label for="price">Password</label>
+										<form:input type="text" path="password" class="form-control"
+											id="price" placeholder="Enter email" value="${user.password}" />
+										<div class="mt-2">
+											<form:errors path="password" class="text-danger"></form:errors>
+										</div>
+									</div>
+
 									<div class="row form-group">
 										<div class="col-lg-12 form-group">
 											<div class="margin-right-15 templatemo-inline-block">
-												<form:radiobutton path="admin" id="active" value="true" />
-												<label for="active" class="font-weight-400"><span></span>Admin</label>
+												<form:radiobutton path="admin" id="admin" value="true" />
+												<label for="admin" class="font-weight-400"><span></span>Admin</label>
 											</div>
 											<div class="margin-right-15 templatemo-inline-block">
-												<form:radiobutton path="admin" id="inactive" value="false" />
-												<label for="inactive" class="font-weight-400"><span></span>User</label>
+												<form:radiobutton path="admin" id="user" value="false" />
+												<label for="user" class="font-weight-400"><span></span>User</label>
 											</div>
 										</div>
 									</div>
@@ -104,13 +112,14 @@
 									<div class="mt-2">
 										<span class="text-primary">${message}</span>
 									</div>
-
-									<div>
-										<button class="btn btn-primary">New</button>
-										<button class="btn btn-primary">Save</button>
-										<button class="btn btn-primary">Delete</button>
+									<div class="form-group">
+										<a href="/admin/user" class="btn templatemo-blue-button">New</a>
+										<button type="submit" class="btn templatemo-blue-button">Save</button>
+										<button formaction="/admin/user/delete/${user.username}"
+											class="btn templatemo-blue-button btn-bg-danger ${edit ? '' : 'disabled'}">Delete</button>
 									</div>
 								</form:form>
+
 							</div>
 						</div>
 					</div>
@@ -153,9 +162,11 @@
 										<td>${item.email}</td>
 										<td>${item.admin ? 'Admin' : 'User'}</td>
 										<td>${item.active ? 'Active' : 'Inactive'}</td>
-										<td><a href="/admin/drink?btnEdit=&id=${item.username}"
+										<td><a
+											href="/admin/user?btnEdit=&username=${item.username}"
 											class="templatemo-edit-btn">Edit</a></td>
-										<td><a href="/admin/drink?btnDel=&id=${item.username}"
+										<td><a
+											href="/admin/user?btnDel=&username=${item.username}"
 											class="templatemo-edit-btn">Delete</a></td>
 									</tr>
 								</c:forEach>

@@ -24,6 +24,8 @@
             <li><a href="/admin/drink"><i class="fa fa-users fa-fw"></i>Manage Drink</a></li>
             <li><a href="/admin/category"><i class="fa fa-users fa-fw"></i>Manage Category</a></li>
             <li><a href="/admin/topping"><i class="fa fa-users fa-fw"></i>Manage Topping</a></li>
+            <li><a href="/admin/order2"><i class="fa fa-users fa-fw"></i>Order Management</a></li>
+            <li><a href="/admin/report"><i class="fa fa-users fa-fw"></i>Report</a></li>
           </ul>  
         </nav>
       </div>
