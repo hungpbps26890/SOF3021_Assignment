@@ -2,6 +2,7 @@ package com.poly.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,5 +27,9 @@ public interface DrinkService {
 	Drink save(Drink entity);
 	
 	List<Drink> findByCategory(Category category);
+	
+	List<Drink> findRelatedDrink(Category category, Integer id, Limit limit);
+	
+	List<Drink> findMore(Limit limit);
 
 }

@@ -3,6 +3,7 @@ package com.poly.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class DrinkController {
 		model.addAttribute("drink", drink);
 		
 		Category category = categoryService.findById(drink.getCategory().getId());
-		List<Drink> drinks = drinkService.findByCategory(category);
+		List<Drink> drinks = drinkService.findRelatedDrink(category, id, Limit.of(3));
 		model.addAttribute("drinks", drinks);
 		
 		return "user/detail";

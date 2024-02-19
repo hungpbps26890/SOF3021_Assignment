@@ -102,7 +102,7 @@ public class CheckoutController {
 			model.addAttribute("user", user);
 
 			ShoppingCart cart = user.getCart();
-			
+
 			PaymentMethod paymentMethod = paymentMethodDAO.findById(order.getPaymentMethod().getId()).get();
 			order.setPaymentMethod(paymentMethod);
 
@@ -119,8 +119,6 @@ public class CheckoutController {
 
 			order.setAddress(address);
 
-			
-
 			orderService.saveOrder(cart, order);
 		}
 
@@ -136,13 +134,16 @@ public class CheckoutController {
 		}
 
 		User user = userService.findById(currentUser.getUsername());
-		
+
 		ShoppingCart cart = user.getCart();
 		sessionService.setAttribute("totalItems", cart.getTotalItems());
 
 		List<Order> orders = orderService.findAllByUsername(user.getUsername());
-		model.addAttribute("orders", orders);
 		
+		orders.forEach(order -> System.out.println(order.toString()));
+		
+		model.addAttribute("orders", orders);
+
 		return "user/order";
 	}
 
