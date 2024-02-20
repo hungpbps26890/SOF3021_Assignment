@@ -34,7 +34,7 @@
               <div class="col-lg-6 col-md-6">
                 <h3 class="tm-section-header gold-text"><fmt:formatNumber type="number" pattern="###,###" value="${drink.price}"/> đ</h3>
                 <p>${drink.description }</p>
-                <a href="/cart/add/${drink.id}" class="tm-more-button margin-top-30">Add to cart</a>    
+                <a href="/cart/add/${drink.id}" class="tm-more-button margin-top-30"><s:message code="home.cart"/></a>    
               </div>
             </div>
           </div>          

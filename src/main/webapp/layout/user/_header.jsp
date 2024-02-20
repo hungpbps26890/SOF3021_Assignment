@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <!-- Preloader -->
     <div id="loader-wrapper">
       <div id="loader"></div>
@@ -24,23 +25,40 @@
             <nav class="tm-nav">
               <ul>
                 
-                <li><a href="/home">Home</a></li>
-                <li><a href="/menu">Menu</a></li>
+
+                <li><a href="/home" class="active"> <s:message code="nav.home"/> </a></li>
+
+                
+
+                <li><a href="/menu"><s:message code="nav.menu"/></a></li>
                 
                 <c:choose>
                 	<c:when test="${not empty sessionScope.currentUser}">
                 		<li><a href="/cart" >
-		               		Cart <c:if test="${sessionScope.totalItems != 0}">(<span style="font-size: 12px">${sessionScope.totalItems}</span>)</c:if> 
+		               		<s:message code="nav.cart"/> <c:if test="${sessionScope.totalItems != 0}">(<span style="font-size: 12px">${sessionScope.totalItems}</span>)</c:if> 
 		               	</a></li>
-		               	<li><a href="/order">Order</a></li>
+
+		               	<li><a href="/order"><s:message code="nav.order"/></a></li>
+                		
+                		<li><a href="/account/profile"><s:message code="nav.welcome"/>, ${sessionScope.currentUser.firstName}</a></li>
+                		<li><a href="/account/logout"><s:message code="nav.logout"/></a></li>
+
+		               <%-- 	<li><a href="/order">Order</a></li>
                 		<li><a href="/account/profile">Welcome, ${sessionScope.currentUser.firstName}</a></li>
-                		<li><a href="/account/logout">Log out</a></li>
+                		<li><a href="/account/logout">Log out</a></li> --%>
+
                 	</c:when>
                 	<c:otherwise>
-                		<li><a href="/account/register">Register</a></li>
-                		<li><a href="/account/login">Login</a></li>
+                		<li><a href="/account/register"><s:message code="nav.register"/></a></li>
+                		<li><a href="/account/login"><s:message code="nav.login"/></a></li>
+                		<li class="nav-item"><a href="?lang=vi" class="nav-link">
+			<img src="/assets/user/img/coVietNam.png" width="40" height="25"></a></li>
+                		<li class="nav-item"><a href="?lang=en" class="nav-link">
+			<img src="/assets/user/img/coNuocAnh.png" width="40" height="25"></a></li>
                 	</c:otherwise>
                 </c:choose>
+                
+                
                 
               </ul>
             </nav>   
