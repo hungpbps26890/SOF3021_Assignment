@@ -86,13 +86,17 @@ public class UserController {
 					if (uri != null && !uri.equals("/account/logout")) {
 						return "redirect:" + uri;
 					}
-
-					if (user.getAdmin()) {
-						return "redirect:/admin/drink";
+					if(user.getActive()) {
+						if (user.getAdmin()) {
+							return "redirect:/admin/drink";
+						}else {
+							return "redirect:/home";
+						}
+					}else {
+						sessionService.removeAttribute("currentUser");
+						model.addAttribute("mess", "Your account has been locked, please contact your Admin (admin@gmail.com) to open an account!");
 					}
-
-					return "redirect:/home";
-				} else {
+				}else {
 					throw new Exception();
 				}
 
