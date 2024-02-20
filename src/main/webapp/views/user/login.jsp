@@ -23,7 +23,7 @@
           
           <form:form action="/account/login" method="post" modelAttribute="user" class="tm-contact-form">
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
-              <h2 class="margin-bottom-30">Login</h2>
+              <h2 class="margin-bottom-30"><s:message code="log.h2"/></h2>
               <div class="form-group">
                 <form:input type="text" id="username" class="form-control" placeholder="USERNAME" 
                 	path="username" value="${user.username}"
@@ -54,7 +54,7 @@
 					<div class="form-check">
 					  <input class="form-check-input" type="checkbox" value="true" id="remember" name="remember">
 					  <label class="form-check-label" for="remember">
-					    Remember me?
+					    <s:message code="log.rem"/>
 					  </label>
 					</div>
 				</c:otherwise>
@@ -68,7 +68,7 @@
 			</div>
               
               <div class="form-group">
-                <button class="tm-more-button" type="submit" name="submit">LOGIN</button> 
+                <button class="tm-more-button" type="submit" name="submit"><s:message code="log.btn"/></button> 
               </div>               
             </div>
             

@@ -28,9 +28,9 @@
 
                 <li><a href="/home" class="active"> <s:message code="nav.home"/> </a></li>
 
-                <li><a href="/home">Home</a></li>
+                
 
-                <li><a href="/menu">Menu</a></li>
+                <li><a href="/menu"><s:message code="nav.menu"/></a></li>
                 
                 <c:choose>
                 	<c:when test="${not empty sessionScope.currentUser}">
@@ -43,9 +43,9 @@
                 		<li><a href="/account/profile"><s:message code="nav.welcome"/>, ${sessionScope.currentUser.firstName}</a></li>
                 		<li><a href="/account/logout"><s:message code="nav.logout"/></a></li>
 
-		               	<li><a href="/order">Order</a></li>
+		               <%-- 	<li><a href="/order">Order</a></li>
                 		<li><a href="/account/profile">Welcome, ${sessionScope.currentUser.firstName}</a></li>
-                		<li><a href="/account/logout">Log out</a></li>
+                		<li><a href="/account/logout">Log out</a></li> --%>
 
                 	</c:when>
                 	<c:otherwise>

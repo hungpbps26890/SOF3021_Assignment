@@ -23,7 +23,7 @@
           
           <form:form action="/account/profile" method="post" modelAttribute="user" class="tm-contact-form">
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
-              <h2 class="margin-bottom-30">Your Profile</h2>
+              <h2 class="margin-bottom-30"><s:message code="pro.h2"/></h2>
               <div class="form-group">
                 <form:hidden id="username" class="form-control" placeholder="USERNAME"
                 	path="username" value="${user.username}"
@@ -77,11 +77,11 @@
               
               <div class="form-group row">
               	<div class="col-md-6">
-              		<button class="tm-more-button" type="submit" name="submit">UPDATE</button> 
+              		<button class="tm-more-button" type="submit" name="submit"><s:message code="pro.update"/></button> 
               	</div>
               		
               	<div class="col-md-6">
-              		<a class="tm-more-button" href="/acount/change-password">CHANGE PASSWORD</a> 
+              		<a class="tm-more-button" href="/acount/change-password"><s:message code="pro.change"/></a> 
               	</div>
                 
               </div>               

@@ -21,7 +21,7 @@
       
       	<section class="tm-section row">
           <div class="col-lg-12 tm-section-header-container margin-bottom-30">
-            <h2 class="tm-section-header gold-text tm-handwriting-font"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"> Your Cart</h2>
+            <h2 class="tm-section-header gold-text tm-handwriting-font"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"> <s:message code="cart.h2"/></h2>
             <div class="tm-hr-container"><hr class="tm-hr"></div>
           </div>
           <div> 
@@ -50,7 +50,7 @@
 			              />
 		                </div>
 		                <div class="tm-product-price col-md-2">
-		                  <a href="cart/delete/${item.drink.id}" class="tm-product-price-link tm-handwriting-font" style="padding: 24px 14px;">Delete</a>
+		                  <a href="cart/delete/${item.drink.id}" class="tm-product-price-link tm-handwriting-font" style="padding: 24px 14px;"><s:message code="cart.delete"/></a>
 		                </div>
 		              </div>
               	</form>
@@ -58,12 +58,12 @@
             </div>
 
 		    <div class="col-lg-12 tm-section-header-container margin-bottom-30">
-	            <h2 class="tm-section-header gold-text" style="width: 100%">Total (${cart.totalItems} product): <fmt:formatNumber type="number" pattern="###,###" value="${cart.totalPrice}"/> <span class="gold-text" style="font-size: 24px">đ</span></h2>
+	            <h2 class="tm-section-header gold-text" style="width: 100%"><s:message code="cart.total"/> (${cart.totalItems} <s:message code="cart.product"/>): <fmt:formatNumber type="number" pattern="###,###" value="${cart.totalPrice}"/> <span class="gold-text" style="font-size: 24px">đ</span></h2>
 	          </div>
             
             <div class="col-lg-12 row">
               	<div class="col-md-3">
-              		<a class="tm-more-button" href="/checkout">CHECK OUT</a> 
+              		<a class="tm-more-button" href="/checkout"><s:message code="cart.checkOut"/></a> 
               	</div>
               </div>               
             </div>

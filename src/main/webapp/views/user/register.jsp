@@ -23,7 +23,7 @@
           
           <form:form action="/account/register" method="post" modelAttribute="registerUser" class="tm-contact-form">
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
-              <h2 class="margin-bottom-30">Register</h2>
+              <h2 class="margin-bottom-30"><s:message code="reg.h2"/></h2>
               <div class="form-group">
                 <form:input type="text" id="username" class="form-control" placeholder="USERNAME" 
                 	path="username"
@@ -86,7 +86,7 @@
 			</div>
               
               <div class="form-group">
-                <button class="tm-more-button" type="submit" name="submit">REGISTER</button> 
+                <button class="tm-more-button" type="submit" name="submit"><s:message code="reg.btn"/></button> 
               </div>               
             </div>
             

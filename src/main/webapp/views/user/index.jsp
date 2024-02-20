@@ -22,7 +22,7 @@
                 
         <section class="tm-section tm-section-margin-bottom-0 row">
           <div class="col-lg-12 tm-section-header-container">
-            <h2 class="tm-section-header gold-text tm-handwriting-font"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"> Popular Items</h2>
+            <h2 class="tm-section-header gold-text tm-handwriting-font"><img src="/assets/user/img/logo.png" alt="Logo" class="tm-site-logo"><s:message code="pop.popular"/></h2>
             <div class="tm-hr-container"><hr class="tm-hr"></div>
           </div>
           <div class="col-lg-12 tm-popular-items-container">
@@ -31,7 +31,7 @@
             </c:forEach>
           </div>
           <div class="col-lg-12" style="display: flex; justify-content: space-around;">
-          	<a class="tm-more-button" href="/menu">MORE DRINKS</a> 
+          	<a class="tm-more-button" href="/menu"><s:message code="home.order1"/></a> 
           </div>    
         </section>
         
