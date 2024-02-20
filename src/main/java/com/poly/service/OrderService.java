@@ -28,4 +28,10 @@ public interface OrderService {
 	Page<Order> findAll(Pageable pageable);
 
 	List<Order> findAll(Sort sort);
+	
+	List<String> findDays();
+	
+	List<String> findMonths();
+	
+	List<String> findYears();
 }

@@ -30,20 +30,21 @@
 									<div class="form-group">
 										<select class="form-select" name="day">
 										  <option selected value="0">Day</option>
-										  <option value="1">1</option>
-										  <option value="2">2</option>
-										  <option value="3">3</option>
+										  <c:forEach var="item" items="${days}">
+										  	<option value="${item}">${item}</option>
+										  </c:forEach>
 										</select>
 										<select class="form-select" name="month">
 										  <option selected value="0">Month</option>
-										  <option value="1">1</option>
-										  <option value="2">2</option>
-										  <option value="3">3</option>
+										  <c:forEach var="item" items="${months}">
+										  	<option value="${item}">${item}</option>
+										  </c:forEach>
 										</select>
 										<select class="form-select" name="year">
-										  <option selected value="0">Year</option>
-										  <option value="2023">2023</option>
-										  <option value="2024">2024</option>
+										<option selected value="0">Year</option>
+										  <c:forEach var="item" items="${years}">
+										  	<option value="${item}">${item}</option>
+										  </c:forEach>
 										</select>
 									</div>
 									<div class="form-group">
@@ -58,6 +59,14 @@
 				<!-- Second row ends -->
 
 				<div class="templatemo-content-widget no-padding">
+					<c:choose>
+						<c:when test="${pages.totalElements == 1}">
+							<span>1 result</span>
+						</c:when>
+						<c:otherwise>
+							<span>${pages.totalElements} result</span>
+						</c:otherwise>
+					</c:choose>
 					<div class="panel panel-default table-responsive">
 						<table
 							class="table table-striped table-bordered templatemo-user-table">
