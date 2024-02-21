@@ -1,13 +1,21 @@
 package com.poly.controller;
 
+import java.util.Map;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.poly.entity.User;
 import com.poly.service.ShoppingCartService;
@@ -37,7 +45,7 @@ public class UserController {
 	@Autowired
 	ShoppingCartService cartService;
 
-	@GetMapping("account/login")
+	@GetMapping("/account/login")
 	public String getLogin(Model model) {
 
 		Cookie username = cookieService.get("cookieUsername");
@@ -52,7 +60,7 @@ public class UserController {
 		return "user/login";
 	}
 
-	@PostMapping("account/login")
+	@PostMapping("/account/login")
 	public String login(Model model, @Valid @ModelAttribute("user") User user, BindingResult result) {
 
 		if (result.hasFieldErrors("username") || result.hasFieldErrors("password")) {
@@ -74,7 +82,7 @@ public class UserController {
 						cookieService.remove("cookieUsername");
 						cookieService.remove("cookiePassword");
 					}
-
+					
 					if (user.getCart() == null) {
 						cartService.createNewShoppingcart(user);
 					}
@@ -242,5 +250,55 @@ public class UserController {
 		}
 
 		return "user/change-password";
+	}
+	
+	@GetMapping("/login/oauth2/code/google")
+	public String secured(@AuthenticationPrincipal OAuth2User principal) {
+		User user = userService.findById(principal.getAttributes().get("email").toString());
+		if (user == null) {
+			user.setUsername(principal.getAttributes().get("email").toString());
+			user.setPassword(String.valueOf((new Random().nextInt(900000) + 100000)));
+			user.setFirstName(principal.getAttributes().get("given_name").toString());
+			user.setLastName(principal.getAttributes().get("family_name").toString());
+			user.setEmail(principal.getAttributes().get("email").toString());
+			user.setActive(true);
+			user.setAdmin(true);
+			
+			user = userService.save(user);
+		}
+		
+		if (user.getCart() == null) {
+			cartService.createNewShoppingcart(user);
+		}
+		
+		sessionService.setAttribute("currentUser", user);
+		
+		return "redirect:/home";
+	}
+	
+	@RequestMapping("/")
+	public String home(@AuthenticationPrincipal OAuth2User principal) {
+		User user = new User();
+		if (userService.findByUsername(principal.getAttributes().get("email").toString()) == null) {
+			user.setUsername(principal.getAttributes().get("email").toString());
+			user.setPassword(String.valueOf((new Random().nextInt(900000) + 100000)));
+			user.setFirstName(principal.getAttributes().get("given_name").toString());
+			user.setLastName(principal.getAttributes().get("family_name").toString());
+			user.setEmail(principal.getAttributes().get("email").toString());
+			user.setActive(true);
+			user.setAdmin(true);
+			user.setPhoneNumber("NULL");
+			
+			user = userService.save(user);
+		} else {
+			user = userService.findById(principal.getAttributes().get("email").toString());
+		}
+			
+		if (user.getCart() == null) {
+			cartService.createNewShoppingcart(user);
+		}
+		
+		sessionService.setAttribute("currentUser", user);
+		return "user/index";
 	}
 }

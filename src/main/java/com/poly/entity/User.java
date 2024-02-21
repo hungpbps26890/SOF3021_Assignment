@@ -2,6 +2,7 @@ package com.poly.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,6 +17,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +29,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
+@Builder
 public class User implements Serializable {
 
 	@Id
@@ -41,11 +44,11 @@ public class User implements Serializable {
 	@NotEmpty(message = "{NotEmpty.user.firstName}")
 	private String firstName;
 
-	@Column(name = "last_name", columnDefinition = "nvarchar(15)")
+	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	@NotEmpty(message = "{NotEmpty.user.lastName}")
 	private String lastName;
 
-	@Column(name = "phone_number", columnDefinition = "varchar(13)")
+	@Column(name = "phone_number", columnDefinition = "varchar(50)")
 	@NotEmpty(message = "{NotEmpty.user.phoneNumber}")
 	private String phoneNumber;
 

@@ -25,12 +25,11 @@ public interface UserService {
 
 	User save(User entity);
 	
-	//List<User> findByUsernameContainingOrFirstNameContainingOrLastNameContaining(String username, String firstName, String lastName);
 	Page<User> findByUsernameContainingOrFirstNameContainingOrLastNameContaining(String username, String firstName, String lastName, Pageable pageable);
 	
 	Page<User> findByPhoneNumberContaining(String phonenumber, Pageable pageable);
 	
 	Page<User> findByEmailContaining(String email, Pageable pageable);
 	
-	
+	User findByUsername(String id);
 }
