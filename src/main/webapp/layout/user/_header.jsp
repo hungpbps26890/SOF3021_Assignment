@@ -46,7 +46,9 @@
 		               <%-- 	<li><a href="/order">Order</a></li>
                 		<li><a href="/account/profile">Welcome, ${sessionScope.currentUser.firstName}</a></li>
                 		<li><a href="/account/logout">Log out</a></li> --%>
-
+					<c:if test="${currentUser.admin}">
+						<li><a href="http://localhost:8080/admin/drink">Dashboard</a></li>
+					</c:if>
                 	</c:when>
                 	<c:otherwise>
                 		<li><a href="/account/register"><s:message code="nav.register"/></a></li>
