@@ -43,7 +43,7 @@ public class MenuController {
 	public String getDrinkByCategory(@PathVariable("id") Integer id, Model model) {
 		
 		Category category = categoryService.findById(id);
-		List<Drink> drinks = drinkService.findByCategory(category);
+		List<Drink> drinks = drinkService.findByCategoryAndActive(category, true);
 		model.addAttribute("drinks", drinks);
 		
 		return "user/menu";

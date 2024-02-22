@@ -122,6 +122,10 @@ public class CheckoutController {
 			order.setAddress(address);
 
 			orderService.saveOrder(cart, order);
+<<<<<<< HEAD
+=======
+			
+>>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 			if(paymentMethod.getId() == 7) {
 				return "redirect:/payment/create_payment";
 			}
@@ -133,7 +137,7 @@ public class CheckoutController {
 	@GetMapping("order")
 	public String getOrder(Model model) {
 		User currentUser = sessionService.getAttribute("currentUser");
-
+		
 		if (currentUser == null) {
 			return "redirect:/account/login";
 		}

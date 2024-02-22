@@ -15,25 +15,28 @@ import java.util.TimeZone;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.poly.config.PaymentConfig;
+<<<<<<< HEAD
 import com.poly.entity.Payment;
 import com.poly.entity.User;
 import com.poly.service.UserService;
+=======
+import com.poly.entity.User;
+>>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 import com.poly.utils.SessionService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+<<<<<<< HEAD
 @RestController
+=======
+@Controller
+>>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 @RequestMapping("/payment")
 public class PaymentController {
 	@Autowired
@@ -41,14 +44,20 @@ public class PaymentController {
 
 	@Autowired
 	SessionService sessionService;
+<<<<<<< HEAD
 	@Autowired
 	UserService userService;
+=======
+>>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 
 	@GetMapping("/create_payment")
 	public ModelAndView createPayment() throws UnsupportedEncodingException {
 
 		User user = sessionService.getAttribute("currentUser");
+<<<<<<< HEAD
 //		User user = userService.findByUsername(curentUser.getUsername());
+=======
+>>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 		double money = user.getCart().getTotalPrice();
 		String m = String.valueOf(money);
 		String m2 = m.replace(".0", "");
@@ -129,4 +138,8 @@ public class PaymentController {
 		return new ModelAndView("redirect:" + paymentUrl);
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
