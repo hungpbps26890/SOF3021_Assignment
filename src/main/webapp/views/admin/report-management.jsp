@@ -26,7 +26,7 @@
 								<h2 class="text-uppercase">Report Management</h2>
 							</div>
 							<div class="panel-body">
-								<form action="/admin/report/search" class="templatemo-login-form" method="post">
+								<form action="admin/report/search" class="templatemo-login-form" method="post">
 									<div class="form-group">
 										<select class="form-select" name="day">
 										  <option selected value="0">Day</option>
@@ -50,6 +50,9 @@
 									<div class="form-group">
 										<button type="submit" class="btn templatemo-blue-button">Search</button>
 										<button formaction="/admin/report/print" class="btn templatemo-blue-button">Print Excel</button>
+										<c:if test="${printExcel}">
+											<a href="/report.xlsx" download>Download Excel</a>
+										</c:if>
 									</div>
 								</form>
 							</div>

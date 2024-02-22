@@ -69,11 +69,10 @@
 			</div>
               
               <div class="form-group">
-                <button class="tm-more-button" type="submit" name="submit"><s:message code="log.btn"/></button> 
-              </div>
-              <div class="form-group">
+                <button class="tm-more-button" type="submit" name="submit"><s:message code="log.btn"/></button>
+                <span> | </span>
                 <a href="/oauth2/authorization/google" class="tm-more-button">Login With Google</a> 
-              </div>                              
+              </div>
             </div>
             
           </form:form>
