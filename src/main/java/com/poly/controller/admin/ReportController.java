@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.poly.entity.Category;
 import com.poly.entity.Report;
 import com.poly.service.CategoryService;
+import com.poly.service.OrderService;
 import com.poly.service.ReportService;
 import com.poly.utils.ExcelService;
 import com.poly.utils.SessionService;
@@ -35,22 +36,34 @@ public class ReportController {
 	@Autowired
 	ReportService reportService;
 	@Autowired
+	OrderService orderService;
+	@Autowired
 	SessionService session;
 	
-	Pageable pageable = PageRequest.of(0, 1);
+	Pageable pageable = PageRequest.of(0, 10);
 	
-	@RequestMapping("admin/report/index")
-	public String index() {
+	@RequestMapping("/admin/report/index")
+	public String index(Model model) {
+		
+		List<String> days = orderService.findDays();
+		List<String> months = orderService.findMonths();
+		List<String> years = orderService.findYears();
+		
+		model.addAttribute("days", days);
+		model.addAttribute("months", months);
+		model.addAttribute("years", years);
+		
 		return "admin/report-management";
 	}
 	
-	@RequestMapping("admin/report")
+	@RequestMapping("/admin/report")
 	public String get(Model model) {
-		model.addAttribute("pages", reportService.findByCreateDate(pageable));
-		return "admin/report-management";
+		model.addAttribute("pages", reportService.findAll(pageable));
+		model.addAttribute("printExcel", true);
+		return "forward:/admin/report/index";
 	}
 
-	@PostMapping("admin/report/search")
+	@PostMapping("/admin/report/search")
 	public String search(Model model, HttpServletRequest request,
 			@RequestParam("day") String day,
 			@RequestParam("month") String month,
@@ -58,35 +71,47 @@ public class ReportController {
 		StringBuilder date = new StringBuilder();
 		date.append(day).append(" ").append(month).append(" ").append(year);
 		
-		if (!day.equals("0") && !month.equals("0") && !year.equals("0"))
-			model.addAttribute("pages", reportService.findByDayAndMonthAndYear(day, month, year, pageable));
-		else if (!month.equals("0") && !year.equals("0"))
-			model.addAttribute("pages", reportService.findByMonthAndYear(month, year, pageable));
-		else if (!year.equals("0"))
-			model.addAttribute("pages", reportService.findByYear(year, pageable));
-		else if (!month.equals("0"))
-			model.addAttribute("pages", reportService.findByMonth(month, pageable));
-		else if (!day.equals("0"))
-			model.addAttribute("pages", reportService.findByDay(day, pageable));
+		if (day == null && month == null && year == null)
+			model.addAttribute("pages", reportService.findAll(pageable));
+		else if (day.equals("0") && month.equals("0") && year.equals("0"))
+			model.addAttribute("pages", reportService.findAll(pageable));
+		else {
+			if (!day.equals("0") && !month.equals("0") && !year.equals("0"))
+				model.addAttribute("pages", reportService.findByDayAndMonthAndYear(day, month, year, pageable));
+			else if (!month.equals("0") && !year.equals("0"))
+				model.addAttribute("pages", reportService.findByMonthAndYear(month, year, pageable));
+			else if (!year.equals("0"))
+				model.addAttribute("pages", reportService.findByYear(year, pageable));
+			else if (!month.equals("0"))
+				model.addAttribute("pages", reportService.findByMonth(month, pageable));
+			else if (!day.equals("0"))
+				model.addAttribute("pages", reportService.findByDay(day, pageable));
+		}
+			
 		
 		ExcelService.exportReportExcel(date.toString(), (List<Report>) model.getAttribute("reports"));
 		
 		session.setAttribute("day", day);
 		session.setAttribute("month", month);
 		session.setAttribute("year", year);
+		
+		
+		model.addAttribute("printExcel", true);
 		return "forward:/admin/report/index";
 	}
 	
-	@GetMapping("admin/report/page")
+	@GetMapping("/admin/report/page")
 	public String page(Model model,
 			@RequestParam("p") Optional<Integer> p) {
 		String day = session.getAttribute("day");
 		String month = session.getAttribute("month");
 		String year = session.getAttribute("year");
-		pageable = PageRequest.of(p.orElse(0), 1);
+		pageable = PageRequest.of(p.orElse(0), 10);
 		
 		if (day == null && month == null && year == null)
-			model.addAttribute("pages", reportService.findByCreateDate(pageable));
+			model.addAttribute("pages", reportService.findAll(pageable));
+		else if (day.equals("0") && month.equals("0") && year.equals("0"))
+			model.addAttribute("pages", reportService.findAll(pageable));
 		else {
 			if (!day.equals("0") && !month.equals("0") && !year.equals("0"))
 				model.addAttribute("pages", reportService.findByDayAndMonthAndYear(day, month, year, pageable));
@@ -103,18 +128,20 @@ public class ReportController {
 		return "forward:/admin/report/index";
 	}
 	
-	@PostMapping("admin/report/print")
+	@PostMapping("/admin/report/print")
 	public String printExcel(Model model, HttpServletRequest request) {
 		List<Report> reports = null;
-		pageable = PageRequest.of(0, 1);
+		pageable = PageRequest.of(0, 10);
 		String day = session.getAttribute("day");
 		String month = session.getAttribute("month");
 		String year = session.getAttribute("year");
 		StringBuilder date = new StringBuilder();
 		date.append(day).append(" ").append(month).append(" ").append(year);
 		
-		if (day == null && month == null && year == null) {
-			reports = reportService.findByCreateDate(pageable).getContent();
+		if (day == null && month == null && year == null)
+			model.addAttribute("pages", reportService.findAll(pageable));
+		else if (day.equals("0") && month.equals("0") && year.equals("0")) {
+			reports = reportService.findAll(pageable).getContent();
 			date = new StringBuilder();
 			Date d = new Date();
 			date.append(d.getDate()).append(d.getMonth()).append(d.getYear());
@@ -130,9 +157,12 @@ public class ReportController {
 			else if (!day.equals("0"))
 				reports = reportService.findByDay(day, pageable).getContent();
 		}
-			
 		
-		ExcelService.exportReportExcel(date.toString(), reportService.findByCreateDate(pageable).getContent());
+		ExcelService.exportReportExcel(date.toString(), reports);
+		
+		model.addAttribute("printExcel", false);
+		
 		return "forward:/admin/report";
 	}
+	
 }

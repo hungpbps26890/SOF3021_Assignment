@@ -76,5 +76,10 @@ public class UserServiceImpl implements UserService{
 	public Page<User> findByEmailContaining(String email, Pageable pageable) {
 		return userDAO.findByEmailContaining(email, pageable);
 	}
+
+	@Override
+	public User findByUsername(String id) {
+		return userDAO.findById(id).orElse(null);
+	}
 	
 }

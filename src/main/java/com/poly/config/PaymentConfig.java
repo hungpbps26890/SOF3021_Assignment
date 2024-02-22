@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9378aceff17b48dae592ee252faedceaa99c9cf3
 package com.poly.config;
 
 import java.io.UnsupportedEncodingException;
@@ -11,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+<<<<<<< HEAD
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -24,6 +28,21 @@ public class PaymentConfig {
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_ReturnUrl = "http://localhost:8080/vnpay_jsp/vnpay_return.jsp";
+=======
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+public class PaymentConfig {
+	
+	
+	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+	public static String vnp_ReturnUrl = "http://localhost:8080/views/user/vnpay_return.jsp";
+>>>>>>> 9378aceff17b48dae592ee252faedceaa99c9cf3
     public static String vnp_TmnCode = "7USS8E6H";
     public static String secretKey = "SIPEJBSTHWCBUOSWTJRODBHYTZDJSWKS";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";

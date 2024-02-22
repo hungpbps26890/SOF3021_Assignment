@@ -18,8 +18,8 @@ public class ReportServiceImpl implements ReportService {
 	ReportDAO reportDAO;
 	
 	@Override
-	public Page<Report> findByCreateDate(Pageable pageable) {
-		return reportDAO.findByCreateDate(pageable);
+	public Page<Report> findAll(Pageable pageable) {
+		return reportDAO.findAll(pageable);
 	}
 
 	@Override
@@ -46,5 +46,4 @@ public class ReportServiceImpl implements ReportService {
 	public Page<Report> findByDayAndMonthAndYear(String day, String month, String year, Pageable pageable) {
 		return reportDAO.findByDayAndMonthAndYear(day, month, year, pageable);
 	}
-
 }

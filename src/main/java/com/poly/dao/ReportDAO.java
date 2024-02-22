@@ -14,7 +14,7 @@ public interface ReportDAO extends JpaRepository<Report, Integer> {
 			+ "FROM Order o "
 			+ "GROUP BY o.createDate "
 			+ "ORDER BY sum(o.totalPrice) DESC")
-	Page<Report> findByCreateDate(Pageable pageable);
+	Page<Report> findAll(Pageable pageable);
 	
 	@Query("SELECT new Report(o.createDate, count(o), sum(o.totalPrice)) "
 			+ "FROM Order o "
@@ -50,5 +50,4 @@ public interface ReportDAO extends JpaRepository<Report, Integer> {
 			+ "GROUP BY o.createDate "
 			+ "ORDER BY sum(o.totalPrice) DESC")
 	Page<Report> findByDayAndMonthAndYear(String day, String month, String year, Pageable pageable);
-	
 }
