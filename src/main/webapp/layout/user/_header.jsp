@@ -9,7 +9,7 @@
     </div>
     <!-- End Preloader -->
     <div class="tm-top-header">
-      <div class="container">
+      <div class="container-fluid mx-3">
         <div class="row">
           <div class="tm-top-header-inner">
             <div class="tm-logo-container">
@@ -41,27 +41,26 @@
 		               	<li><a href="/order"><s:message code="nav.order"/></a></li>
                 		
                 		<li><a href="/account/profile"><s:message code="nav.welcome"/>, ${sessionScope.currentUser.firstName}</a></li>
+                		<c:if test="${currentUser.admin}">
+						<li><a href="http://localhost:8080/admin/drink">Dashboard</a></li>
+						</c:if>
                 		<li><a href="/account/logout"><s:message code="nav.logout"/></a></li>
 
 		               <%-- 	<li><a href="/order">Order</a></li>
                 		<li><a href="/account/profile">Welcome, ${sessionScope.currentUser.firstName}</a></li>
                 		<li><a href="/account/logout">Log out</a></li> --%>
-					<c:if test="${currentUser.admin}">
-						<li><a href="http://localhost:8080/admin/drink">Dashboard</a></li>
-					</c:if>
                 	</c:when>
                 	<c:otherwise>
                 		<li><a href="/account/register"><s:message code="nav.register"/></a></li>
                 		<li><a href="/account/login"><s:message code="nav.login"/></a></li>
-                		<li class="nav-item"><a href="?lang=vi" class="nav-link">
-			<img src="/assets/user/img/coVietNam.png" width="40" height="25"></a></li>
-                		<li class="nav-item"><a href="?lang=en" class="nav-link">
-			<img src="/assets/user/img/coNuocAnh.png" width="40" height="25"></a></li>
                 	</c:otherwise>
+                	
+                	
                 </c:choose>
-                
-                
-                
+                	<li class="nav-item"><a href="?lang=vi" class="nav-link">
+						<img src="/assets/user/img/coVietNam.png" width="40" height="25"></a></li>
+                	<li class="nav-item"><a href="?lang=en" class="nav-link">
+						<img src="/assets/user/img/coNuocAnh.png" width="40" height="25"></a></li>
               </ul>
             </nav>   
           </div>           

@@ -120,6 +120,10 @@ public class CheckoutController {
 			order.setAddress(address);
 
 			orderService.saveOrder(cart, order);
+			
+			if(paymentMethod.getId() == 7) {
+				return "redirect:/payment/create_payment";
+			}
 		}
 
 		return "redirect:/order";
@@ -128,7 +132,7 @@ public class CheckoutController {
 	@GetMapping("order")
 	public String getOrder(Model model) {
 		User currentUser = sessionService.getAttribute("currentUser");
-
+		
 		if (currentUser == null) {
 			return "redirect:/account/login";
 		}
