@@ -1,8 +1,10 @@
 package com.poly.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,8 +52,8 @@ public class HomeController {
 	
 	@ModelAttribute("drinks")
 	public Page<Drink> getDrinks(@RequestParam("page") Optional<Integer> page) {
-		Pageable pageable = PageRequest.of(page.orElse(0), 12);
-		Page<Drink> drinks = drinkService.findAll(pageable);
+		Pageable pageable = PageRequest.of(page.orElse(0), 9);
+		Page<Drink> drinks = drinkService.findByActive(true, pageable);
 		return drinks;
 	}
 	

@@ -21,6 +21,8 @@ public interface DrinkService {
 	List<Drink> findAll();
 
 	Page<Drink> findAll(Pageable pageable);
+	
+	Page<Drink> findByActive(Boolean active, Pageable pageable);
 
 	List<Drink> findAll(Sort sort);
 
@@ -31,5 +33,7 @@ public interface DrinkService {
 	List<Drink> findRelatedDrink(Category category, Integer id, Limit limit);
 	
 	List<Drink> findMore(Limit limit);
+	
+	List<Drink> findByCategoryAndActive(Category category, Boolean active);
 
 }

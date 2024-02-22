@@ -28,10 +28,9 @@
 									modelAttribute="user" method="post"
 									enctype="multipart/form-data">
 									<div class="form-group">
-										<label for="name">Username</label> 
-										<form:input type="text"
-											path="username" class="form-control" id="name"
-											value="${user.username}"/>
+										<label for="name">Username</label>
+										<form:input type="text" path="username" class="form-control"
+											id="name" value="${user.username}" />
 									</div>
 									<div class="row">
 										<div class="form-group col-lg-6">
@@ -76,8 +75,9 @@
 
 									<div class="form-group">
 										<label for="price">Password</label>
-										<form:input type="text" path="password" class="form-control"
-											id="price" placeholder="Enter email" value="${user.password}" />
+										<form:input type="password" path="password"
+											class="form-control" id="price" placeholder="Enter email"
+											value="${user.password}" />
 										<div class="mt-2">
 											<form:errors path="password" class="text-danger"></form:errors>
 										</div>
@@ -90,8 +90,8 @@
 												<label for="admin" class="font-weight-400"><span></span>Admin</label>
 											</div>
 											<div class="margin-right-15 templatemo-inline-block">
-												<form:radiobutton path="admin" id="user" value="false" />
-												<label for="user" class="font-weight-400"><span></span>User</label>
+												<form:radiobutton path="admin" id="u" value="false" />
+												<label for="u" class="font-weight-400"><span></span>User</label>
 											</div>
 										</div>
 									</div>
@@ -153,43 +153,60 @@
 									<td>Delete</td>
 								</tr>
 							</thead>
+							<c:forEach var="item" items="${page.content}">
+								<tr>
+									<td>${item.username}</td>
+									<td>${item.firstName} ${item.lastName}</td>
+									<td>${item.phoneNumber}</td>
+									<td>${item.email}</td>
+									<td>${item.admin ? 'Admin' : 'User'}</td>
+									<td>${item.active ? 'Active' : 'Inactive'}</td>
+									<td><a
+										href="/admin/user?btnEdit=&username=${item.username}"
+										class="templatemo-edit-btn">Edit</a></td>
+									<td><a
+										href="/admin/user?btnDel=&username=${item.username}"
+										class="templatemo-edit-btn">Delete</a></td>
+								</tr>
+							</c:forEach>
 							<tbody>
-								<c:forEach var="item" items="${users}">
-									<tr>
-										<td>${item.username}</td>
-										<td>${item.firstName} ${item.lastName}</td>
-										<td>${item.phoneNumber}</td>
-										<td>${item.email}</td>
-										<td>${item.admin ? 'Admin' : 'User'}</td>
-										<td>${item.active ? 'Active' : 'Inactive'}</td>
-										<td><a
-											href="/admin/user?btnEdit=&username=${item.username}"
-											class="templatemo-edit-btn">Edit</a></td>
-										<td><a
-											href="/admin/user?btnDel=&username=${item.username}"
-											class="templatemo-edit-btn">Delete</a></td>
-									</tr>
-								</c:forEach>
-
-							</tbody>
 						</table>
+						<div class="pagination-wrap">
+							<ul class="pagination">
+								<c:choose>
+									<c:when test="${page.totalPages == 1}">
+										<li><a href="/admin/user/page?page=${page.number}">${page.number + 1}</a></li>
+									</c:when>
+									<c:when test="${page.number + 1 == 1 && page.totalPages != 1}">
+										<li><a href="/admin/user/page?page=${page.number}">${page.number + 1}</a></li>
+										<li><a href="/admin/user/page?page=${page.number + 1}">${page.number + 2}</a></li>
+										<li><a href="/admin/user/page?page=${page.number + 1}"
+											aria-label="Next"><span aria-hidden="true"><i
+													class="fa fa-caret-right"></i></span></a></li>
+									</c:when>
+									<c:when test="${page.number + 1 == page.totalPages}">
+										<li><a href="/admin/user/page?page=${page.number - 1}"
+											aria-label="Previous"><span aria-hidden="true"><i
+													class="fa fa-caret-left"></i></span></a></li>
+										<li><a href="/admin/user/page?page=${page.number - 1}">${page.number}</a></li>
+										<li><a href="/admin/user/page?page=${page.number}">${page.number + 1}</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/admin/user/page?page=${page.number - 1}"
+											aria-label="First"><span aria-hidden="true"><i
+													class="fa fa-caret-left"></i></i></span></a></li>
+										<li><a href="/admin/user/page?page=${page.number - 1}">${page.number}</a></li>
+										<li><a href="/admin/user/page?page=${page.number}">${page.number + 1}</a></li>
+										<li><a href="/admin/user/page?page=${page.number + 1}">${page.number + 2}</a></li>
+										<li><a href="/admin/user/page?page=${page.number + 1}"
+											aria-label="Next"><span aria-hidden="true"><i
+													class="fa fa-caret-right"></i></span></a></li>
+									</c:otherwise>
+								</c:choose>
+							</ul>
+						</div>
 					</div>
 				</div>
-
-
-				<div class="pagination-wrap">
-					<ul class="pagination">
-						<li><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#" aria-label="Next"> <span
-								aria-hidden="true"><i class="fa fa-play"></i></span>
-						</a></li>
-					</ul>
-				</div>
-
 			</div>
 		</div>
 	</div>
