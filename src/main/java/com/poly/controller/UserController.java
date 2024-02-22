@@ -1,5 +1,8 @@
 package com.poly.controller;
 
+import java.util.Map;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,7 +10,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.poly.entity.User;
 import com.poly.service.ShoppingCartService;
@@ -37,7 +42,7 @@ public class UserController {
 	@Autowired
 	ShoppingCartService cartService;
 
-	@GetMapping("account/login")
+	@GetMapping("/account/login")
 	public String getLogin(Model model) {
 
 		Cookie username = cookieService.get("cookieUsername");
@@ -52,7 +57,7 @@ public class UserController {
 		return "user/login";
 	}
 
-	@PostMapping("account/login")
+	@PostMapping("/account/login")
 	public String login(Model model, @Valid @ModelAttribute("user") User user, BindingResult result) {
 
 		if (result.hasFieldErrors("username") || result.hasFieldErrors("password")) {
@@ -74,7 +79,7 @@ public class UserController {
 						cookieService.remove("cookieUsername");
 						cookieService.remove("cookiePassword");
 					}
-
+					
 					if (user.getCart() == null) {
 						cartService.createNewShoppingcart(user);
 					}
@@ -243,4 +248,5 @@ public class UserController {
 
 		return "user/change-password";
 	}
+	
 }
