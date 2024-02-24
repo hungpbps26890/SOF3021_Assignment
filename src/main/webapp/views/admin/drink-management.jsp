@@ -27,7 +27,8 @@
 							</div>
 							<div class="panel-body">
 								<form:form action="/admin/drink" class="templatemo-login-form"
-									modelAttribute="drink" method="post" enctype="multipart/form-data">
+									modelAttribute="drink" method="post"
+									enctype="multipart/form-data">
 
 									<input type="hidden" name="id" value="${drink.id}">
 
@@ -40,7 +41,7 @@
 											<form:errors path="name" class="text-danger"></form:errors>
 										</div>
 									</div>
-									
+
 									<div class="form-group">
 										<label for="price">Price</label>
 										<form:input type="text" path="price" class="form-control"
@@ -88,8 +89,7 @@
 										<div class="col-lg-12">
 											<label for="photo" class="control-label templatemo-block">Image</label>
 											<input type="file" class="form-control filestyle" id="photo"
-												name="photo"
-												accept="image/png, image/jpeg, image/webp" />
+												name="photo" accept="image/png, image/jpeg, image/webp" />
 											<p class="text-danger mt-2">${errorFile}</p>
 										</div>
 									</div>
@@ -126,7 +126,8 @@
 									<td><a href="" class="white-text templatemo-sort-by">Drink
 											Price<span class="caret"></span>
 									</a></td>
-									<td><a href="" class="white-text templatemo-sort-by">Description<span class="caret"></span>
+									<td><a href="" class="white-text templatemo-sort-by">Description<span
+											class="caret"></span>
 									</a></td>
 									<td><a href="" class="white-text templatemo-sort-by">Status<span
 											class="caret"></span>
@@ -137,16 +138,15 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="item" items="${drinks}">
+								<c:forEach var="item" items="${page.content}">
 									<tr>
 										<td>${item.id}</td>
 										<td>${item.name}</td>
 										<td>${item.price}</td>
 										<td>${item.description}</td>
 										<td>${item.active ? 'Active' : 'Inactive'}</td>
-										<td>
-					                      	<img src="/images/${item.drinkImage}" style="width: 100px">
-					                      </td>
+										<td><img src="/images/${item.drinkImage}"
+											style="width: 100px"></td>
 										<td><a href="/admin/drink?btnEdit=&id=${item.id}"
 											class="templatemo-edit-btn">Edit</a></td>
 										<td><a href="/admin/drink?btnDel=&id=${item.id}"
@@ -156,23 +156,42 @@
 
 							</tbody>
 						</table>
+						<div class="pagination-wrap">
+							<ul class="pagination">
+								<c:choose>
+									<c:when test="${page.totalPages == 1}">
+										<li><a href="/admin/drink/page?page=${page.number}">${page.number + 1}</a></li>
+									</c:when>
+									<c:when test="${page.number + 1 == 1 && page.totalPages != 1}">
+										<li><a href="/admin/drink/page?page=${page.number}">${page.number + 1}</a></li>
+										<li><a href="/admin/drink/page?page=${page.number + 1}">${page.number + 2}</a></li>
+										<li><a href="/admin/drink/page?page=${page.number + 1}"
+											aria-label="Next"><span aria-hidden="true"><i
+													class="fa fa-caret-right"></i></span></a></li>
+									</c:when>
+									<c:when test="${page.number + 1 == page.totalPages}">
+										<li><a href="/admin/drink/page?page=${page.number - 1}"
+											aria-label="Previous"><span aria-hidden="true"><i
+													class="fa fa-caret-left"></i></span></a></li>
+										<li><a href="/admin/drink/page?page=${page.number - 1}">${page.number}</a></li>
+										<li><a href="/admin/drink/page?page=${page.number}">${page.number + 1}</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/admin/drink/page?page=${page.number - 1}"
+											aria-label="First"><span aria-hidden="true"><i
+													class="fa fa-caret-left"></i></i></span></a></li>
+										<li><a href="/admin/drink/page?page=${page.number - 1}">${page.number}</a></li>
+										<li><a href="/admin/drink/page?page=${page.number}">${page.number + 1}</a></li>
+										<li><a href="/admin/drink/page?page=${page.number + 1}">${page.number + 2}</a></li>
+										<li><a href="/admin/drink/page?page=${page.number + 1}"
+											aria-label="Next"><span aria-hidden="true"><i
+													class="fa fa-caret-right"></i></span></a></li>
+									</c:otherwise>
+								</c:choose>
+							</ul>
+						</div>
 					</div>
 				</div>
-
-
-				<div class="pagination-wrap">
-					<ul class="pagination">
-						<li><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#" aria-label="Next"> <span
-								aria-hidden="true"><i class="fa fa-play"></i></span>
-						</a></li>
-					</ul>
-				</div>
-
 			</div>
 		</div>
 	</div>

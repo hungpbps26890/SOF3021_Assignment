@@ -73,6 +73,19 @@ public class DrinkServiceIpml implements DrinkService{
 	public List<Drink> findMore(Limit limit) {
 		return drinkDAO.findMore(limit);
 	}
+
+	@Override
+	public List<Drink> findByCategoryAndActive(Category category, Boolean active) {
+		// TODO Auto-generated method stub
+		return drinkDAO.findByCategoryAndActive(category, active);
+	}
+
+	@Override
+	public Page<Drink> findByActive(Boolean active, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return drinkDAO.findByActive(active, pageable);
+	}
+
 	
 	
 }

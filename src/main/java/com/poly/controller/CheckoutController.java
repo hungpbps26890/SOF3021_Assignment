@@ -79,6 +79,7 @@ public class CheckoutController {
 
 			User user = userService.findById(currentUser.getUsername());
 			model.addAttribute("user", user);
+			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -100,6 +101,7 @@ public class CheckoutController {
 
 			User user = userService.findById(currentUser.getUsername());
 			model.addAttribute("user", user);
+			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -120,10 +122,20 @@ public class CheckoutController {
 			order.setAddress(address);
 
 			orderService.saveOrder(cart, order);
+<<<<<<< HEAD
 			
 			if (paymentMethod.getId() == 7)
 				return "redirect:/payment/create_payment";
 		
+=======
+<<<<<<< HEAD
+=======
+			
+>>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
+			if(paymentMethod.getId() == 7) {
+				return "redirect:/payment/create_payment";
+			}
+>>>>>>> 66e27683a3ddd15b18b3f0c3c50d83e40084cf36
 		}
 
 		return "redirect:/order";
@@ -132,7 +144,7 @@ public class CheckoutController {
 	@GetMapping("order")
 	public String getOrder(Model model) {
 		User currentUser = sessionService.getAttribute("currentUser");
-
+		
 		if (currentUser == null) {
 			return "redirect:/account/login";
 		}

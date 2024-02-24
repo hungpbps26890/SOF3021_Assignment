@@ -8,9 +8,9 @@
             <nav class="col-lg-3 col-md-3 tm-footer-nav tm-footer-div">
               <h3 class="tm-footer-div-title"><s:message code="footer.main"/></h3>
               <ul>
-                <li><a href="#"><s:message code="footer.home"/></a></li>
+                <li><a href="/home"><s:message code="footer.home"/></a></li>
                 <li><a href="#"><s:message code="footer.about"/></a></li>
-                <li><a href="#"><s:message code="footer.directory"/></a></li>
+                <li><a href="/menu"><s:message code="footer.directory"/></a></li>
                 <li><a href="#"><s:message code="footer.blog"/></a></li>
                 <li><a href="#"><s:message code="footer.ourService"/></a></li>
               </ul>
@@ -24,10 +24,10 @@
               <h3 class="tm-footer-div-title"><s:message code="footer.social"/></h3>
               <p><s:message code="footer.p3"/>:</p>
               <div class="tm-social-icons-container">
-                <a href="#" class="tm-social-icon"><i class="fa fa-facebook"></i></a>
+                <a href="https://www.facebook.com/baonguyen2107FPT" class="tm-social-icon"><i class="fa fa-facebook"></i></a>
                 <a href="#" class="tm-social-icon"><i class="fa fa-twitter"></i></a>
                 <a href="#" class="tm-social-icon"><i class="fa fa-linkedin"></i></a>
-                <a href="#" class="tm-social-icon"><i class="fa fa-youtube"></i></a>
+                <a href="https://www.youtube.com/channel/UCmrQLnn_OtJ3jyTLh7cUCMw" class="tm-social-icon"><i class="fa fa-youtube"></i></a>
                 <a href="#" class="tm-social-icon"><i class="fa fa-behance"></i></a>
               </div>
             </div>

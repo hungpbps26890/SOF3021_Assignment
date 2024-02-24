@@ -66,7 +66,7 @@
 										<td>${order.paymentMethod.name}</td>
 										<td>${order.paymentStatus ? 'Paid' : 'Not Paid Yet'}</td>
 										<td><a href="/order/cancel/${order.id}"
-											class="btn btn-danger ${(order.orderStatus.id == 6 || order.orderStatus.id == 5 || order.orderStatus.id == 4) ? 'disabled' : ''} ">Cancel</a></td>
+											class="btn btn-danger ${(order.orderStatus.id == 1) ? '' : 'disabled'} ">Cancel</a></td>
 									</tr>
 								</c:forEach>
 								

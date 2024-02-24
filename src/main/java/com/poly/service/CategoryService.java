@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.poly.dao.CategoryDAO;
 import com.poly.entity.Category;
 
 public interface CategoryService {
@@ -23,5 +24,6 @@ public interface CategoryService {
 	List<Category> findAll(Sort sort);
 
 	Category save(Category entity);
+	
 
 }
