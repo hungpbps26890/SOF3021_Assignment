@@ -120,6 +120,10 @@ public class CheckoutController {
 			order.setAddress(address);
 
 			orderService.saveOrder(cart, order);
+			
+			if (paymentMethod.getId() == 7)
+				return "redirect:/payment/create_payment";
+		
 		}
 
 		return "redirect:/order";

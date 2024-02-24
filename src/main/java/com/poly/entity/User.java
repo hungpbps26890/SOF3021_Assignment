@@ -29,7 +29,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-@Builder
 public class User implements Serializable {
 
 	@Id

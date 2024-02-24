@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,6 +46,8 @@ public class UserController {
 
 	@GetMapping("/account/login")
 	public String getLogin(Model model) {
+		
+		
 
 		Cookie username = cookieService.get("cookieUsername");
 		User user = new User();
@@ -247,6 +251,57 @@ public class UserController {
 		}
 
 		return "user/change-password";
+	}
+	
+	@GetMapping("/login/oauth2/code/google")
+	public String secured(@AuthenticationPrincipal OAuth2User principal) {
+		System.out.println("test");
+		User user = userService.findById(principal.getAttributes().get("email").toString());
+		if (user == null) {
+			user.setUsername(principal.getAttributes().get("email").toString());
+			user.setPassword(String.valueOf((new Random().nextInt(900000) + 100000)));
+			user.setFirstName(principal.getAttributes().get("given_name").toString());
+			user.setLastName(principal.getAttributes().get("family_name").toString());
+			user.setEmail(principal.getAttributes().get("email").toString());
+			user.setActive(true);
+			user.setAdmin(true);
+			
+			user = userService.save(user);
+		}
+		
+		if (user.getCart() == null) {
+			cartService.createNewShoppingcart(user);
+		}
+		
+		sessionService.setAttribute("currentUser", user);
+		
+		return "redirect:/home";
+	}
+	
+	@RequestMapping("/")
+	public String home(@AuthenticationPrincipal OAuth2User principal) {
+		User user = new User();
+		if (userService.findByUsername(principal.getAttributes().get("email").toString()) == null) {
+			user.setUsername(principal.getAttributes().get("email").toString());
+			user.setPassword(String.valueOf((new Random().nextInt(900000) + 100000)));
+			user.setFirstName(principal.getAttributes().get("given_name").toString());
+			user.setLastName(principal.getAttributes().get("family_name").toString());
+			user.setEmail(principal.getAttributes().get("email").toString());
+			user.setActive(true);
+			user.setAdmin(true);
+			user.setPhoneNumber("NULL");
+			
+			user = userService.save(user);
+		} else {
+			user = userService.findById(principal.getAttributes().get("email").toString());
+		}
+			
+		if (user.getCart() == null) {
+			cartService.createNewShoppingcart(user);
+		}
+		
+		sessionService.setAttribute("currentUser", user);
+		return "user/index";
 	}
 	
 }

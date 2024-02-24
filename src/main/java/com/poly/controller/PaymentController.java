@@ -38,7 +38,6 @@ public class PaymentController {
 	
 	@GetMapping("/create_payment")
 	public ModelAndView createPayment() throws UnsupportedEncodingException{
-		
 			
 			String vnp_Version = "2.1.0";
 	        String vnp_Command = "pay";

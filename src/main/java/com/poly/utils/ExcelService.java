@@ -39,8 +39,7 @@ public class ExcelService {
 				row.createCell(3).setCellValue(r.getTotalPrice());
 			}
 			
-			//String path = System.getProperty("user.dir") + "/report/report.xlsx";
-			String path = System.getProperty("user.dir") + "src/main/webapp/report/report.xlsx";
+			String path = System.getProperty("user.dir") + "/src/main/webapp/report/report.xlsx";
 			File file = new File(path);
 			if (!file.getParentFile().exists())
 				file.getParentFile().mkdir();
