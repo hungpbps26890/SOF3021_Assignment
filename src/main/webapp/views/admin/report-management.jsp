@@ -26,35 +26,26 @@
 								<h2 class="text-uppercase">Report Management</h2>
 							</div>
 							<div class="panel-body">
-								<form action="admin/report/search" class="templatemo-login-form" method="post">
+								<form:form action="/admin/report/search" method="post" modelAttribute="createDate">
+									<form:select path="day">
+										<form:option value="0">Day</form:option>
+										<form:options items="${days}" />
+									</form:select>
+									<form:select path="month">
+										<form:option value="0">Month</form:option>
+										<form:options items="${months}" />
+									</form:select>
+									<form:select path="year">
+										<form:option value="0">Year</form:option>
+										<form:options items="${years}" />
+									</form:select>
 									<div class="form-group">
-										<select class="form-select" name="day">
-										  <option selected value="0">Day</option>
-										  <c:forEach var="item" items="${days}">
-										  	<option value="${item}">${item}</option>
-										  </c:forEach>
-										</select>
-										<select class="form-select" name="month">
-										  <option selected value="0">Month</option>
-										  <c:forEach var="item" items="${months}">
-										  	<option value="${item}">${item}</option>
-										  </c:forEach>
-										</select>
-										<select class="form-select" name="year">
-										<option selected value="0">Year</option>
-										  <c:forEach var="item" items="${years}">
-										  	<option value="${item}">${item}</option>
-										  </c:forEach>
-										</select>
-									</div>
-									<div class="form-group">
-										<button type="submit" class="btn templatemo-blue-button">Search</button>
-										<button formaction="/admin/report/print" class="btn templatemo-blue-button">Print Excel</button>
+										<button formaction="/admin/report/search" class="btn templatemo-blue-button">search</button>
 										<c:if test="${printExcel}">
-											<a href="/report.xlsx" download>Download Excel</a>
+											<a href="/report/report.xlsx" class="btn templatemo-blue-button" download>Print Excel</a>
 										</c:if>
 									</div>
-								</form>
+								</form:form>
 							</div>
 						</div>
 					</div>
@@ -112,19 +103,19 @@
 							<c:when test="${pages.number + 1 == 1 && pages.totalPages != 1}">
 								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
 								<li><a href="/admin/report/page?p=${pages.number + 1}">${pages.number + 2}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true">>></span></a></li>
 							</c:when>
 							<c:when test="${pages.number + 1 == pages.totalPages}">
-								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
 								<li><a href="/admin/report/page?p=${pages.number - 1}">${pages.number}</a></li>
 								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="First"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="First"><span aria-hidden="true"><<</span></a></li>
 								<li><a href="/admin/report/page?p=${pages.number - 1}">${pages.number}</a></li>
 								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
 								<li><a href="/admin/report/page?p=${pages.number + 1}">${pages.number + 2}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true"><i class="fa fa-play"></i></span></a></li>
+								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true">>></span></a></li>
 							</c:otherwise>
 						</c:choose>
 					</ul>

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.poly.config.PaymentConfig;
@@ -26,23 +27,23 @@ import com.poly.utils.SessionService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+@RestController
 @Controller
 @RequestMapping("/payment")
 public class PaymentController {
 	@Autowired
 	HttpServletRequest req;
-
 	@Autowired
 	SessionService sessionService;
-	
 	@Autowired
 	UserService userService;
-
+	
 	@GetMapping("/create_payment")
 	public ModelAndView createPayment() throws UnsupportedEncodingException {
 
 		User user = sessionService.getAttribute("currentUser");
 		User curentUser = userService.findByUsername("currentUser");
+//		User user = userService.findByUsername(curentUser.getUsername());
 		double money = user.getCart().getTotalPrice();
 		String m = String.valueOf(money);
 		String m2 = m.replace(".0", "");

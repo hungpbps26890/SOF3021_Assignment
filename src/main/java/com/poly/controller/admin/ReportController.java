@@ -1,5 +1,6 @@
 package com.poly.controller.admin;
 
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.entity.Category;
 import com.poly.entity.Report;
+import com.poly.model.CreateDate;
 import com.poly.service.CategoryService;
 import com.poly.service.OrderService;
 import com.poly.service.ReportService;
@@ -57,23 +59,23 @@ public class ReportController {
 	}
 	
 	@RequestMapping("/admin/report")
-	public String get(Model model) {
+	public String get(Model model, @ModelAttribute("createDate") CreateDate cd) {
 		model.addAttribute("pages", reportService.findAll(pageable));
-		model.addAttribute("printExcel", true);
+		model.addAttribute("printExcel", false);
 		return "forward:/admin/report/index";
 	}
 
 	@PostMapping("/admin/report/search")
 	public String search(Model model, HttpServletRequest request,
-			@RequestParam("day") String day,
-			@RequestParam("month") String month,
-			@RequestParam("year") String year) {
+			@ModelAttribute("createDate") CreateDate createDate) {
+		
+		String day = createDate.getDay();
+		String month = createDate.getMonth();
+		String year = createDate.getYear();
 		StringBuilder date = new StringBuilder();
 		date.append(day).append(" ").append(month).append(" ").append(year);
 		
-		if (day == null && month == null && year == null)
-			model.addAttribute("pages", reportService.findAll(pageable));
-		else if (day.equals("0") && month.equals("0") && year.equals("0"))
+		if (day.equals("0") && month.equals("0") && year.equals("0"))
 			model.addAttribute("pages", reportService.findAll(pageable));
 		else {
 			if (!day.equals("0") && !month.equals("0") && !year.equals("0"))
@@ -87,9 +89,10 @@ public class ReportController {
 			else if (!day.equals("0"))
 				model.addAttribute("pages", reportService.findByDay(day, pageable));
 		}
-			
 		
-		ExcelService.exportReportExcel(date.toString(), (List<Report>) model.getAttribute("reports"));
+		Page<Report> pages = (Page<Report>) model.getAttribute("pages");
+		
+		ExcelService.exportReportExcel(date.toString(), pages.getContent());
 		
 		session.setAttribute("day", day);
 		session.setAttribute("month", month);
@@ -101,7 +104,7 @@ public class ReportController {
 	}
 	
 	@GetMapping("/admin/report/page")
-	public String page(Model model,
+	public String page(Model model, @ModelAttribute("createDate") CreateDate createDate,
 			@RequestParam("p") Optional<Integer> p) {
 		String day = session.getAttribute("day");
 		String month = session.getAttribute("month");
@@ -126,43 +129,6 @@ public class ReportController {
 		}
 		
 		return "forward:/admin/report/index";
-	}
-	
-	@PostMapping("/admin/report/print")
-	public String printExcel(Model model, HttpServletRequest request) {
-		List<Report> reports = null;
-		pageable = PageRequest.of(0, 10);
-		String day = session.getAttribute("day");
-		String month = session.getAttribute("month");
-		String year = session.getAttribute("year");
-		StringBuilder date = new StringBuilder();
-		date.append(day).append(" ").append(month).append(" ").append(year);
-		
-		if (day == null && month == null && year == null)
-			model.addAttribute("pages", reportService.findAll(pageable));
-		else if (day.equals("0") && month.equals("0") && year.equals("0")) {
-			reports = reportService.findAll(pageable).getContent();
-			date = new StringBuilder();
-			Date d = new Date();
-			date.append(d.getDate()).append(d.getMonth()).append(d.getYear());
-		} else {
-			if (!day.equals("0") && !month.equals("0") && !year.equals("0"))
-				reports = reportService.findByDayAndMonthAndYear(day, month, year, pageable).getContent();
-			else if (!month.equals("0") && !year.equals("0"))
-				reports = reportService.findByMonthAndYear(month, year, pageable).getContent();
-			else if (!year.equals("0"))
-				reports = reportService.findByYear(year, pageable).getContent();
-			else if (!month.equals("0"))
-				reports = reportService.findByMonth(month, pageable).getContent();
-			else if (!day.equals("0"))
-				reports = reportService.findByDay(day, pageable).getContent();
-		}
-		
-		ExcelService.exportReportExcel(date.toString(), reports);
-		
-		model.addAttribute("printExcel", false);
-		
-		return "forward:/admin/report";
 	}
 	
 }

@@ -79,6 +79,7 @@ public class CheckoutController {
 
 			User user = userService.findById(currentUser.getUsername());
 			model.addAttribute("user", user);
+			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -100,6 +101,7 @@ public class CheckoutController {
 
 			User user = userService.findById(currentUser.getUsername());
 			model.addAttribute("user", user);
+			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -119,8 +121,9 @@ public class CheckoutController {
 
 			order.setAddress(address);
 
-			orderService.saveOrder(cart, order);
-			
+			orderService.saveOrder(cart, order);			
+			if (paymentMethod.getId() == 7)
+				return "redirect:/payment/create_payment";
 			if(paymentMethod.getId() == 7) {
 				return "redirect:/payment/create_payment";
 			}
