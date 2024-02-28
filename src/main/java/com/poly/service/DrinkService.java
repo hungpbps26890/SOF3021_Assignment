@@ -30,6 +30,8 @@ public interface DrinkService {
 	
 	List<Drink> findByCategory(Category category);
 	
+	List<Drink> findByActive(boolean active);
+	
 	List<Drink> findRelatedDrink(Category category, Integer id, Limit limit);
 	
 	List<Drink> findMore(Limit limit);

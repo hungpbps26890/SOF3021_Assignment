@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.poly.config.PaymentConfig;
 import com.poly.entity.User;
+import com.poly.service.UserService;
 import com.poly.utils.SessionService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,11 +34,15 @@ public class PaymentController {
 
 	@Autowired
 	SessionService sessionService;
+	
+	@Autowired
+	UserService userService;
 
 	@GetMapping("/create_payment")
 	public ModelAndView createPayment() throws UnsupportedEncodingException {
 
 		User user = sessionService.getAttribute("currentUser");
+		User curentUser = userService.findByUsername("currentUser");
 		double money = user.getCart().getTotalPrice();
 		String m = String.valueOf(money);
 		String m2 = m.replace(".0", "");

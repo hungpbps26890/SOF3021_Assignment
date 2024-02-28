@@ -17,6 +17,8 @@ public interface DrinkDAO extends JpaRepository<Drink, Integer> {
 	
 	List<Drink> findByCategoryAndActive(Category category, Boolean active);
 	
+	List<Drink> findByActive(Boolean active);
+	
 	Page<Drink> findByActive(Boolean active, Pageable pageable);
 	
 	@Query("SELECT d FROM Drink d WHERE d.category = ?1 AND d.id <> ?2")

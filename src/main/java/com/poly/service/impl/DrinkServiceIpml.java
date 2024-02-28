@@ -86,6 +86,12 @@ public class DrinkServiceIpml implements DrinkService{
 		return drinkDAO.findByActive(active, pageable);
 	}
 
+	@Override
+	public List<Drink> findByActive(boolean active) {
+		// TODO Auto-generated method stub
+		return drinkDAO.findByActive(active);
+	}
+
 	
 	
 }
