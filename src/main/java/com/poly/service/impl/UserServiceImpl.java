@@ -1,13 +1,12 @@
 package com.poly.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.poly.dao.UserDAO;
@@ -40,46 +39,33 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User findById(String id) {
+	public User findById(Long id) {
 		return userDAO.findById(id).get();
 	}
 
 	@Override
-	public void deleteById(String id) {
+	public void deleteById(Long id) {
 		User user = findById(id);
 		user.setActive(false);
 		save(user);
 	}
 
-//	@Override
-//	public void delete(User entity) {
-//		User user = findById(entity.getUsername());
-//		user.setActive(false);
-//		save(user);
-//	}
 	@Override
 	public void delete(User entity) {
-		save(entity);
+		User user = findById(entity.getId());
+		user.setActive(false);
+		save(user);
 	}
 
 	@Override
-	public Page<User> findByUsernameContainingOrFirstNameContainingOrLastNameContaining(String username, String firstName, String lastName, Pageable pageable) {
-		return userDAO.findByUsernameContainingOrFirstNameContainingOrLastNameContaining(username, firstName, lastName, pageable);
-	}
-	
-	@Override
-	public Page<User> findByPhoneNumberContaining(String phonenumber, Pageable pageable) {
-		return userDAO.findByPhoneNumberContaining(phonenumber, pageable);
-	}
-
-	@Override
-	public Page<User> findByEmailContaining(String email, Pageable pageable) {
-		return userDAO.findByEmailContaining(email, pageable);
+	public User findByEmail(String email) {
+		Optional<User> user = userDAO.findByEmail(email);
+		if (!user.isPresent()) {
+			return null;
+		}
+		return user.get();
 	}
 
-	@Override
-	public User findByUsername(String id) {
-		return userDAO.findById(id).orElse(null);
-	}
+
 	
 }

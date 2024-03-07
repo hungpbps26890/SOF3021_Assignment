@@ -40,7 +40,7 @@ public class HomeController {
 		User currentUser = sessionService.getAttribute("currentUser");
 
 		if (currentUser != null) {
-			User user = userService.findById(currentUser.getUsername());
+			User user = userService.findById(currentUser.getId());
 			ShoppingCart cart = user.getCart();
 			sessionService.setAttribute("totalItems", cart.getTotalItems());
 		} else {
@@ -51,9 +51,8 @@ public class HomeController {
 	}
 	
 	@ModelAttribute("drinks")
-	public Page<Drink> getDrinks(@RequestParam("page") Optional<Integer> page) {
-		Pageable pageable = PageRequest.of(page.orElse(0), 9);
-		Page<Drink> drinks = drinkService.findByActive(true, pageable);
+	public List<Drink> getDrinks() {
+		List<Drink> drinks = drinkService.findAllByActive(true, Limit.of(12));
 		return drinks;
 	}
 	

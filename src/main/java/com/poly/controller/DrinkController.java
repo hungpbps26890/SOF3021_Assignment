@@ -30,7 +30,7 @@ public class DrinkController {
 		model.addAttribute("drink", drink);
 		
 		Category category = categoryService.findById(drink.getCategory().getId());
-		List<Drink> drinks = drinkService.findRelatedDrink(category, id, Limit.of(3));
+		List<Drink> drinks = drinkService.findRelatedDrink(category, id, true, Limit.of(3));
 		model.addAttribute("drinks", drinks);
 		
 		return "user/detail";

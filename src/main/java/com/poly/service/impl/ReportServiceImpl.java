@@ -1,5 +1,6 @@
 package com.poly.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,15 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public Page<Report> findByDayAndMonthAndYear(String day, String month, String year, Pageable pageable) {
 		return reportDAO.findByDayAndMonthAndYear(day, month, year, pageable);
+	}
+	
+	@Override
+	public Page<Report> findByDrink(Pageable pageable) {
+		return reportDAO.findByDrink(pageable);
+	}
+	
+	@Override
+	public Page<Report> findByDrink(LocalDate fromDate, LocalDate toDate, Pageable pageable) {
+		return reportDAO.findByDrink(fromDate, toDate, pageable);
 	}
 }

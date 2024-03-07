@@ -33,7 +33,7 @@ public class ShoppingCart {
 	private Integer totalItems;
 
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "username", referencedColumnName = "username")
+	@JoinColumn(name = "userId", referencedColumnName = "id")
 	private User user;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
@@ -47,7 +47,7 @@ public class ShoppingCart {
 
 	@Override
 	public String toString() {
-		return "ShoppingCart{" + "id=" + id + ", customer=" + user.getUsername() + ", totalPrice=" + totalPrice
+		return "ShoppingCart{" + "id=" + id + ", customer=" + user.getName() + ", totalPrice=" + totalPrice
 				+ ", totalItems=" + totalItems + ", cartItems=" + cartItems.size() + '}';
 	}
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 
 import com.poly.entity.User;
 
@@ -13,9 +12,9 @@ public interface UserService {
 
 	void delete(User entity);
 
-	void deleteById(String id);
+	void deleteById(Long id);
 
-	User findById(String id);
+	User findById(Long id);
 
 	List<User> findAll();
 	
@@ -25,11 +24,6 @@ public interface UserService {
 
 	User save(User entity);
 	
-	Page<User> findByUsernameContainingOrFirstNameContainingOrLastNameContaining(String username, String firstName, String lastName, Pageable pageable);
+	User findByEmail(String email);
 	
-	Page<User> findByPhoneNumberContaining(String phonenumber, Pageable pageable);
-	
-	Page<User> findByEmailContaining(String email, Pageable pageable);
-	
-	User findByUsername(String id);
 }

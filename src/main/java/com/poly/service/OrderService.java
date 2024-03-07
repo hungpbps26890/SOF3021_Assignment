@@ -15,7 +15,7 @@ public interface OrderService {
 	
 	void cancelOrder(Long id);
 	
-	List<Order> findAllByUsername(String username);
+	List<Order> findAllByUsername(Long id);
 	
 	List<Order> findAll();
 	

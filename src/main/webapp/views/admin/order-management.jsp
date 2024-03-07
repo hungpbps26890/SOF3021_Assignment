@@ -33,11 +33,11 @@
 
 									<div class="form-group">
 										<label for="name">User Name</label>
-										<form:input type="text" path="user.username" class="form-control"
-											id="name" placeholder="Enter username name"
-											value="${order.user.username}" />
+										<form:input type="text" path="user.name" class="form-control"
+											id="name" placeholder="Enter name name"
+											value="${order.user.name}" />
 										<div class="mt-2">
-											<form:errors path="user.username" class="text-danger"></form:errors>
+											<form:errors path="user.name" class="text-danger"></form:errors>
 										</div>
 									</div>
 									
@@ -134,7 +134,7 @@
 								<c:forEach var="order" items="${orders}">
 									<tr>
 										<td>${order.id}</td>
-										<td>${order.user.username}</td>
+										<td>${order.user.name}</td>
 										<td> 
 											<fmt:parseDate value="${order.createDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDateTime" type="both" />
 											<fmt:formatDate value="${parsedDateTime}" pattern="d/M/yyyy HH:mm:ss" />

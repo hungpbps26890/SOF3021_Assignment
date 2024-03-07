@@ -1,5 +1,7 @@
 package com.poly.dao;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.poly.entity.OrderDetail;
 import com.poly.entity.Report;
 
 public interface ReportDAO extends JpaRepository<Report, Integer> {
@@ -50,4 +53,21 @@ public interface ReportDAO extends JpaRepository<Report, Integer> {
 			+ "GROUP BY o.createDate "
 			+ "ORDER BY sum(o.totalPrice) DESC")
 	Page<Report> findByDayAndMonthAndYear(String day, String month, String year, Pageable pageable);
+	
+	@Query("SELECT new com.poly.entity.Report(d.name, count(d), (d.price * count(d))) "
+			+ "FROM OrderDetail od "
+			+ "INNER JOIN Drink d ON d.id = od.drink.id "
+			+ "GROUP BY d.name, d.price "
+			+ "ORDER BY count(d) DESC")
+	Page<Report> findByDrink(Pageable pageable);
+	
+	@Query("SELECT new com.poly.entity.Report(d.name, count(d), (d.price * count(d))) "
+			+ "FROM OrderDetail od "
+			+ "INNER JOIN Drink d ON d.id = od.drink.id "
+			+ "INNER JOIN Order o ON o.id = od.order.id "
+			+ "WHERE CAST(o.createDate as DATE) between ?1 and ?2 "
+			+ "GROUP BY d.name, d.price "
+			+ "ORDER BY count(d) DESC")
+	Page<Report> findByDrink(LocalDate fromDate, LocalDate toDate, Pageable pageable);
+	
 }

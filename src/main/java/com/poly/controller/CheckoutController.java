@@ -48,10 +48,14 @@ public class CheckoutController {
 			return "redirect:/account/login";
 		}
 
-		User user = userService.findById(currentUser.getUsername());
+		User user = userService.findById(currentUser.getId());
 		model.addAttribute("user", user);
 
 		ShoppingCart cart = user.getCart();
+		
+		if (cart.getCartItems().isEmpty()) {
+			return "redirect:/home";
+		}
 
 		model.addAttribute("cart", cart);
 
@@ -66,7 +70,12 @@ public class CheckoutController {
 
 	@PostMapping("checkout")
 	public String checkout(@ModelAttribute("order") Order order, @RequestParam("addressString") String addressString,
+			@RequestParam("phoneNumber") String phoneNumber,
 			Model model) {
+		
+		if (phoneNumber.equals("")) {
+			return "redirect:/account/profile";
+		}
 
 		if (addressString.equals("")) {
 			model.addAttribute("addressErrorMessage", "Please enter delivery address");
@@ -77,9 +86,8 @@ public class CheckoutController {
 				return "redirect:/account/login";
 			}
 
-			User user = userService.findById(currentUser.getUsername());
+			User user = userService.findById(currentUser.getId());
 			model.addAttribute("user", user);
-			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -99,9 +107,8 @@ public class CheckoutController {
 				return "redirect:/account/login";
 			}
 
-			User user = userService.findById(currentUser.getUsername());
+			User user = userService.findById(currentUser.getId());
 			model.addAttribute("user", user);
-			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -121,10 +128,9 @@ public class CheckoutController {
 
 			order.setAddress(address);
 
-
 			orderService.saveOrder(cart, order);
-
-			if(paymentMethod.getId() == 7) {
+			
+			if (paymentMethod.getId() == 7) {
 				return "redirect:/payment/create_payment";
 			}
 		}
@@ -135,17 +141,17 @@ public class CheckoutController {
 	@GetMapping("order")
 	public String getOrder(Model model) {
 		User currentUser = sessionService.getAttribute("currentUser");
-		
+
 		if (currentUser == null) {
 			return "redirect:/account/login";
 		}
 
-		User user = userService.findById(currentUser.getUsername());
+		User user = userService.findById(currentUser.getId());
 
 		ShoppingCart cart = user.getCart();
 		sessionService.setAttribute("totalItems", cart.getTotalItems());
 
-		List<Order> orders = orderService.findAllByUsername(user.getUsername());
+		List<Order> orders = orderService.findAllByUsername(user.getId());
 		
 		orders.forEach(order -> System.out.println(order.toString()));
 		

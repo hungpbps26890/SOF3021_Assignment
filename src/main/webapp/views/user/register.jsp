@@ -25,11 +25,11 @@
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
               <h2 class="margin-bottom-30"><s:message code="reg.h2"/></h2>
               <div class="form-group">
-                <form:input type="text" id="username" class="form-control" placeholder="USERNAME" 
-                	path="username"
+                <form:input type="text" id="name" class="form-control" placeholder="name" 
+                	path="name"
                 />
                 <div class="mt-2">
-	              	<form:errors path="username" class="badge text-bg-danger"></form:errors>
+	              	<form:errors path="name" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
               <div class="form-group">
