@@ -3,6 +3,7 @@ package com.poly.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,7 @@ public class MenuController {
 	
 	@ModelAttribute("drinks")
 	public List<Drink> getDrinks() {
-		return drinkService.findAll();
+		return drinkService.findAllByActive(true, Limit.of(20));
 	}
 	
 	@GetMapping("menu/category/{id}")

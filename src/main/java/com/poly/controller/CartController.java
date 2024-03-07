@@ -40,7 +40,7 @@ public class CartController {
 			return "redirect:/account/login";
 		}
 
-		User user = userService.findById(currentUser.getUsername());
+		User user = userService.findById(currentUser.getId());
 
 		ShoppingCart cart = user.getCart();
 
@@ -57,7 +57,7 @@ public class CartController {
 		Drink drink = drinkService.findById(id);
 
 		User currentUser = sessionService.getAttribute("currentUser");
-		User user = userService.findById(currentUser.getUsername());
+		User user = userService.findById(currentUser.getId());
 		
 		ShoppingCart cart = cartService.addItemToCart(drink, 1, user);
 		model.addAttribute("cart", cart);
@@ -71,7 +71,7 @@ public class CartController {
 		Drink drink = drinkService.findById(id);
 
 		User currentUser = sessionService.getAttribute("currentUser");
-		User user = userService.findById(currentUser.getUsername());
+		User user = userService.findById(currentUser.getId());
 		
 		ShoppingCart cart = cartService.updateCart(drink, quantity, user);
 		model.addAttribute("cart", cart);
@@ -85,7 +85,7 @@ public class CartController {
 		Drink drink = drinkService.findById(id);
 
 		User currentUser = sessionService.getAttribute("currentUser");
-		User user = userService.findById(currentUser.getUsername());
+		User user = userService.findById(currentUser.getId());
 		
 		ShoppingCart cart = cartService.deleteItemFromCart(drink, user);
 		model.addAttribute("cart", cart);

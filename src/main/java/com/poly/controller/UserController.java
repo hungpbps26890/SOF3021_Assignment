@@ -1,11 +1,8 @@
 package com.poly.controller;
 
-import java.util.Map;
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,8 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.poly.auth.UserRoot;
+import com.poly.dto.RegisterUserDTO;
 import com.poly.entity.User;
 import com.poly.service.ShoppingCartService;
 import com.poly.service.UserService;
@@ -23,7 +21,6 @@ import com.poly.utils.CookieService;
 import com.poly.utils.ParamService;
 import com.poly.utils.SessionService;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
 
 @Controller
@@ -43,77 +40,50 @@ public class UserController {
 
 	@Autowired
 	ShoppingCartService cartService;
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 
-	@GetMapping("/account/login")
+	@GetMapping("account/login")
 	public String getLogin(Model model) {
-		
-		
 
-		Cookie username = cookieService.get("cookieUsername");
 		User user = new User();
-
-		if (username != null) {
-			user = userService.findById(username.getValue());
-		}
 
 		model.addAttribute("user", user);
 
 		return "user/login";
 	}
-
-	@PostMapping("/account/login")
-	public String login(Model model, @Valid @ModelAttribute("user") User user, BindingResult result) {
-
-		if (result.hasFieldErrors("username") || result.hasFieldErrors("password")) {
-			System.out.println("Has errors: " + result.toString());
-		} else {
-			String username = user.getUsername();
-			String password = user.getPassword();
-			boolean remember = paramService.getBoolean("remember", false);
-
-			try {
-
-				user = userService.findById(username);
-
-				if (user != null && user.getPassword().equals(password)) {
-					if (remember == true) {
-						cookieService.create("cookieUsername", username, 10);
-						cookieService.create("cookiePassword", password, 10);
-					} else {
-						cookieService.remove("cookieUsername");
-						cookieService.remove("cookiePassword");
-					}
-					
-					if (user.getCart() == null) {
-						cartService.createNewShoppingcart(user);
-					}
-					
-					sessionService.setAttribute("currentUser", user);
-
-					String uri = sessionService.getAttribute("security-uri");
-
-					if (uri != null && !uri.equals("/account/logout")) {
-						return "redirect:" + uri;
-					}
-					if(user.getActive()) {
-						if (user.getAdmin()) {
-							return "redirect:/admin/drink";
-						}else {
-							return "redirect:/home";
-						}
-					}else {
-						sessionService.removeAttribute("currentUser");
-						model.addAttribute("mess", "Your account has been locked, please contact your Admin (admin@gmail.com) to open an account!");
-					}
-				}else {
-					throw new Exception();
-				}
-
-			} catch (Exception e) {
-				model.addAttribute("message", "Username or password is invalid!");
-			}
+	
+	@RequestMapping("account/login/success")
+	public String handleLoginSuccess(Authentication auth) {
+		UserRoot userRoot = (UserRoot) auth.getPrincipal();
+		
+		User user = userService.findByEmail(userRoot.getUsername());
+		
+		if (user.getCart() == null) {
+			cartService.createNewShoppingcart(user);
 		}
-
+		
+		sessionService.setAttribute("currentUser", user);
+		
+		return "redirect:/home";
+	}
+	
+	@RequestMapping("account/login/failure")
+	public String handleLoginFailure(Model model, @Valid @ModelAttribute("user") RegisterUserDTO user, BindingResult result) {
+		
+		if (result.hasFieldErrors("email") || result.hasFieldErrors("password")) {
+			System.out.println("Has errors: " + result.toString());
+			model.addAttribute("message", "Username or password is invalid!");
+		} 
+		
+		return "user/login";
+	}
+	
+	@RequestMapping("account/accessDenied")
+	public String handleAccessDenied(Model model) {
+		model.addAttribute("message", "Please login with admin role!");
+		model.addAttribute("user", new User());
 		return "user/login";
 	}
 
@@ -133,19 +103,18 @@ public class UserController {
 	}
 
 	@PostMapping("account/profile")
-	public String updateProfile(Model model, @Valid @ModelAttribute("user") User user, BindingResult result) {
+	public String updateProfile(Model model, @Valid @ModelAttribute("user") RegisterUserDTO user, BindingResult result) {
 
-		if (result.hasFieldErrors("username") || result.hasFieldErrors("firstname") || result.hasFieldErrors("lastName")
+		if (result.hasFieldErrors("name") || result.hasFieldErrors("phoneNumber")
 				|| result.hasFieldErrors("email")) {
 			System.out.println("Has errors: " + result.toString());
 		} else {
 			User currentUser = sessionService.getAttribute("currentUser");
 
-			User updatedUser = userService.findById(currentUser.getUsername());
+			User updatedUser = userService.findById(currentUser.getId());
 
-			updatedUser.setFirstName(user.getFirstName());
-			updatedUser.setLastName(user.getLastName());
-			updatedUser.setEmail(user.getEmail());
+			updatedUser.setName(user.getName());
+			updatedUser.setPhoneNumber(user.getPhoneNumber());
 
 			userService.save(updatedUser);
 
@@ -165,31 +134,33 @@ public class UserController {
 	}
 
 	@PostMapping("account/register")
-	public String register(Model model, @Valid @ModelAttribute("registerUser") User registerUser, BindingResult result,
+	public String register(Model model, @Valid @ModelAttribute("registerUser") RegisterUserDTO registerUserDTO, BindingResult result,
 			@RequestParam("confirmedPassword") String confirmedPassword) {
 
 		if (result.hasErrors() && confirmedPassword.equals("")) {
 			model.addAttribute("confirmedPasswordErrorMessage", "Please enter Confirmed Password");
+		} else if (userService.findByEmail(registerUserDTO.getEmail()) != null) {
+			model.addAttribute("errorMessage", "Email is already registerd, please choose another email");
 		} else {
 
-			if (registerUser.getPassword().equals(confirmedPassword)) {
+			if (registerUserDTO.getPassword().equals(confirmedPassword)) {
 				try {
-					registerUser = userService.save(registerUser);
+					userService.save(User.builder()
+							.name(registerUserDTO.getName())
+							.email(registerUserDTO.getEmail())
+							.phoneNumber(registerUserDTO.getPhoneNumber())
+							.password(passwordEncoder.encode(registerUserDTO.getPassword()))
+							.build());
 
-					cartService.createNewShoppingcart(registerUser);
-
-					sessionService.setAttribute("currentUser", registerUser);
-
-					return "redirect:/home";
+					return "redirect:/account/login";
 				} catch (Exception e) {
 					e.printStackTrace();
 					model.addAttribute("confirmedPassword", confirmedPassword);
-					model.addAttribute("errorMessage", "Username is already registerd, please choose another Username");
 				}
 
 			} else {
 				model.addAttribute("confirmedPassword", confirmedPassword);
-				model.addAttribute("confirmedPasswordErrorMessage", "Confirmed passowrd is invalid");
+				model.addAttribute("confirmedPasswordErrorMessage", "Confirmed passoword is invalid");
 			}
 
 		}
@@ -220,13 +191,13 @@ public class UserController {
 		} else if (confirmedPassword.equals("")) {
 			model.addAttribute("confirmedPasswordErrorMessage", "Please enter Confirmed Password");
 		} else {
-			user = userService.findById(user.getUsername());
-			
-			if (user.getPassword().equals(password)) {
+			user = userService.findByEmail(user.getEmail());
+
+			if (passwordEncoder.matches(password, user.getPassword())) {
 
 				if (newPassword.equals(confirmedPassword)) {
 					try {
-						user.setPassword(newPassword);
+						user.setPassword(passwordEncoder.encode(newPassword));
 
 						user = userService.save(user);
 
@@ -252,56 +223,4 @@ public class UserController {
 
 		return "user/change-password";
 	}
-	
-	@GetMapping("/login/oauth2/code/google")
-	public String secured(@AuthenticationPrincipal OAuth2User principal) {
-		System.out.println("test");
-		User user = userService.findById(principal.getAttributes().get("email").toString());
-		if (user == null) {
-			user.setUsername(principal.getAttributes().get("email").toString());
-			user.setPassword(String.valueOf((new Random().nextInt(900000) + 100000)));
-			user.setFirstName(principal.getAttributes().get("given_name").toString());
-			user.setLastName(principal.getAttributes().get("family_name").toString());
-			user.setEmail(principal.getAttributes().get("email").toString());
-			user.setActive(true);
-			user.setAdmin(true);
-			
-			user = userService.save(user);
-		}
-		
-		if (user.getCart() == null) {
-			cartService.createNewShoppingcart(user);
-		}
-		
-		sessionService.setAttribute("currentUser", user);
-		
-		return "redirect:/home";
-	}
-	
-	@RequestMapping("/")
-	public String home(@AuthenticationPrincipal OAuth2User principal) {
-		User user = new User();
-		if (userService.findByUsername(principal.getAttributes().get("email").toString()) == null) {
-			user.setUsername(principal.getAttributes().get("email").toString());
-			user.setPassword(String.valueOf((new Random().nextInt(900000) + 100000)));
-			user.setFirstName(principal.getAttributes().get("given_name").toString());
-			user.setLastName(principal.getAttributes().get("family_name").toString());
-			user.setEmail(principal.getAttributes().get("email").toString());
-			user.setActive(true);
-			user.setAdmin(true);
-			user.setPhoneNumber("NULL");
-			
-			user = userService.save(user);
-		} else {
-			user = userService.findById(principal.getAttributes().get("email").toString());
-		}
-			
-		if (user.getCart() == null) {
-			cartService.createNewShoppingcart(user);
-		}
-		
-		sessionService.setAttribute("currentUser", user);
-		return "user/index";
-	}
-	
 }

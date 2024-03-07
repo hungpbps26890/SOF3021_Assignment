@@ -13,66 +13,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.poly.config.PaymentConfig;
-<<<<<<< HEAD
-import com.poly.entity.Payment;
 import com.poly.entity.User;
 import com.poly.service.UserService;
-=======
-import com.poly.entity.User;
->>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 import com.poly.utils.SessionService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-<<<<<<< HEAD
 @RestController
-=======
-@Controller
->>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 @RequestMapping("/payment")
 public class PaymentController {
 	@Autowired
 	HttpServletRequest req;
-<<<<<<< HEAD
-	
-	@GetMapping("/create_payment")
-	public ModelAndView createPayment() throws UnsupportedEncodingException{
-			
-			String vnp_Version = "2.1.0";
-	        String vnp_Command = "pay";
-	        String orderType = "other";
-	        long amount = 100000*100;
-	        String bankCode = "NCB";
-	        
-	        String vnp_TxnRef = PaymentConfig.getRandomNumber(8);
-	        String vnp_IpAddr = PaymentConfig.getIpAddress(req);
-=======
->>>>>>> 66e27683a3ddd15b18b3f0c3c50d83e40084cf36
 
 	@Autowired
 	SessionService sessionService;
-<<<<<<< HEAD
-	@Autowired
+	
+	@Autowired 
 	UserService userService;
-=======
->>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
 
 	@GetMapping("/create_payment")
 	public ModelAndView createPayment() throws UnsupportedEncodingException {
 
-		User user = sessionService.getAttribute("currentUser");
-<<<<<<< HEAD
-//		User user = userService.findByUsername(curentUser.getUsername());
-=======
->>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42
+		User currentUser = sessionService.getAttribute("currentUser");
+		User user = userService.findById(currentUser.getId());
+		
 		double money = user.getCart().getTotalPrice();
 		String m = String.valueOf(money);
 		String m2 = m.replace(".0", "");
@@ -153,8 +124,4 @@ public class PaymentController {
 		return new ModelAndView("redirect:" + paymentUrl);
 	}
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 3997cac64959b1bb45a6856b421c10f8f1c9ec42

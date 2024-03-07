@@ -17,33 +17,66 @@
 		<%@ include file="/layout/admin/_left-column.jsp"%>
 		<!-- Main content -->
 		<div class="templatemo-content col-1 light-gray-bg">
-
 			<div class="templatemo-content-container">
 				<div class="templatemo-flex-row flex-content-row">
 					<div class="col-1">
 						<div class="panel panel-default margin-10">
-							<div class="panel-heading">
-								<h2 class="text-uppercase">Report Management</h2>
-							</div>
+							<form:form method="post">
+								<div class="panel-heading">
+										<h2 class="text-uppercase" style="font-weight:bolder;">${isDrink ? 'Drink' : 'Bill'} Management
+											<button formaction="/admin/report/count" class="btn templatemo-blue-button">Change</button></h2>
+											<input type="hidden" name="isDrink" value="${isDrink}"> 
+									</div>
+							</form:form>
 							<div class="panel-body">
 								<form:form action="/admin/report/search" method="post" modelAttribute="createDate">
-									<form:select path="day">
-										<form:option value="0">Day</form:option>
-										<form:options items="${days}" />
-									</form:select>
-									<form:select path="month">
-										<form:option value="0">Month</form:option>
-										<form:options items="${months}" />
-									</form:select>
-									<form:select path="year">
-										<form:option value="0">Year</form:option>
-										<form:options items="${years}" />
-									</form:select>
+									<legend>${isDrink ? 'From date:' : 'Date:'}
+										<form:select path="createDate1.day">
+											<form:option value="1">Day</form:option>
+											<form:options items="${days}" />
+										</form:select>
+										<form:select path="createDate1.month">
+											<form:option value="1">Month</form:option>
+											<form:options items="${months}" />
+										</form:select>
+										<form:select path="createDate1.year">
+											<form:option value="1">Year</form:option>
+											<form:options items="${years}" />
+										</form:select>
+									</legend>
+									<br>
+									<div class="${isDrink ? '' : 'hide'}">
+										<legend>To date<span style="color:white;">12</span>:
+											<form:select path="createDate2.day">
+												<form:option value="1">Day</form:option>
+												<form:options items="${days}" />
+											</form:select>
+											<form:select path="createDate2.month">
+												<form:option value="1">Month</form:option>
+												<form:options items="${months}" />
+											</form:select>
+											<form:select path="createDate2.year">
+												<form:option value="1">Year</form:option>
+												<form:options items="${years}" />
+											</form:select>
+										</legend>
+									</div>
+									<div class="row form-group">
+											<div class="col-lg-12 form-group">
+												<label class="font-weight-400"><span></span>Payment status: </label>
+												<div class="margin-right-15 templatemo-inline-block">
+													<input id="paySuccess" name="payment" type="radio" value="true" checked="${isPayment ? 'checked' : ''}"/>
+													<label for="paySuccess" class="font-weight-400"><span></span>Success</label>
+												</div>
+												<div class="margin-right-15 templatemo-inline-block">
+													<input id="payFail" name="payment" type="radio" value="false" checked="${isPayment ? '' : 'checked'}">
+													<label for="payFail" class="font-weight-400"><span></span>Fail</label>
+												</div>
+											</div>
+										</div>
 									<div class="form-group">
-										<button formaction="/admin/report/search" class="btn templatemo-blue-button">search</button>
-										<c:if test="${printExcel}">
-											<a href="/report/report.xlsx" class="btn templatemo-blue-button" download>Print Excel</a>
-										</c:if>
+										<button formaction="/admin/report/search" class="btn templatemo-blue-button">Search</button>
+										<a href="/report/report.xlsx" class="btn templatemo-blue-button" download>Print Excel</a>
 									</div>
 								</form:form>
 							</div>
@@ -70,9 +103,10 @@
 											<span class="caret"></span>
 									</a></td>
 									<td>
-										<a href="" class="white-text templatemo-sort-by">Create Date<span class="caret"></span></a>
+										<span>${isDrink ? 'Drink Name' : 'Created Date'}</span>
 									</td>
 									<td>Quantity</td>
+									<td>Payment</td>
 									<td>Total Price</td>
 								</tr>
 							</thead>
@@ -82,8 +116,16 @@
 									end="${pages.size - 1}">
 									<tr>
 										<td>${i.index + 1}</td>
-										<td>${item.createDate}</td>
+										<c:choose>
+											<c:when test="${isDrink != true}">
+												<td>${item.createDate}</td>
+											</c:when>
+											<c:otherwise>
+												<td>${item.drinkName}</td>
+											</c:otherwise>
+										</c:choose>
 										<td>${item.quantity}</td>
+										<td>${isPayment ? 'Success' : 'Fail'}</td>
 										<td>
 											<fmt:formatNumber type="number" pattern="###,###" value="${item.totalPrice}"/> VND
 										</td>
@@ -92,34 +134,8 @@
 							</tbody>
 						</table>
 					</div>
-				</div>
-
-				<div class="pagination-wrap">
-					<ul class="pagination">
-						<c:choose>
-							<c:when test="${pages.totalPages == 1}">
-								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>			
-							</c:when>
-							<c:when test="${pages.number + 1 == 1 && pages.totalPages != 1}">
-								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number + 1}">${pages.number + 2}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true">>></span></a></li>
-							</c:when>
-							<c:when test="${pages.number + 1 == pages.totalPages}">
-								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
-								<li><a href="/admin/report/page?p=${pages.number - 1}">${pages.number}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="/admin/report/page?p=${pages.number - 1}" aria-label="First"><span aria-hidden="true"><<</span></a></li>
-								<li><a href="/admin/report/page?p=${pages.number - 1}">${pages.number}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number}">${pages.number + 1}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number + 1}">${pages.number + 2}</a></li>
-								<li><a href="/admin/report/page?p=${pages.number + 1}" aria-label="Next"><span aria-hidden="true">>></span></a></li>
-							</c:otherwise>
-						</c:choose>
-					</ul>
-				</div>
+					
+					
 
 			</div>
 		</div>

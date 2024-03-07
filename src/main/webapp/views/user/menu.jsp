@@ -53,7 +53,10 @@
 	                </div>
 	              </div>
               </c:forEach>
-          </div>        
+              
+              
+            </div>
+          </div>          
         </section>
         
         <%@ include file="/layout/user/_daily_menu.jsp" %>

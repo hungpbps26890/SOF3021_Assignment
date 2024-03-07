@@ -21,15 +21,15 @@
        
         <section class="tm-section row">
           
-          <form:form action="/account/login" method="post" modelAttribute="user" class="tm-contact-form">
+          <form:form action="/account/login-check" method="post" modelAttribute="user" class="tm-contact-form">
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
               <h2 class="margin-bottom-30"><s:message code="log.h2"/></h2>
               <div class="form-group">
-                <form:input type="text" id="username" class="form-control" placeholder="USERNAME" 
-                	path="username" value="${user.username}"
+                <form:input type="text" id="email" class="form-control" placeholder="EMAIL" 
+                	path="email" value="${user.email}"
                 />
                 <div class="mt-2">
-	              	<form:errors path="username" class="badge text-bg-danger"></form:errors>
+	              	<form:errors path="email" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
               <div class="form-group">
@@ -40,40 +40,21 @@
 	              	<form:errors path="password" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
-              <c:choose>
-				<c:when test="${not empty account.username}">
-					<div class="form-check">
-					  <input class="form-check-input" type="checkbox" value="true" id="remember" name="remember" checked>
-					  <label class="form-check-label" for="remember">
-					    Remember me?
-					  </label>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<div class="form-check">
-					  <input class="form-check-input" type="checkbox" value="true" id="remember" name="remember">
-					  <label class="form-check-label" for="remember">
-					    <s:message code="log.rem"/>
-					  </label>
-					</div>
-				</c:otherwise>
-			</c:choose>
 			
 			<div class="mb-3">
 				<span class="text-danger">${message}</span>
-				<span class="text-danger">${mess}</span>
 			</div>
 			<div class="mb-3">
 				<span class="text-danger">${param.error}</span>
 			</div>
               
               <div class="form-group">
-                <button class="tm-more-button" type="submit" name="submit"><s:message code="log.btn"/></button>
-              </div>
+                <button class="tm-more-button" type="submit" name="submit"><s:message code="log.btn"/></button> 
+              </div>  
               <div class="form-group">
-                <a href="/oauth2/authorization/google" class="tm-more-button">Login With Google</a> 
-              </div>
+              	Login with <a href="/oauth2/authorization/google">Google</a> or 
+    			<a href="/oauth2/authorization/facebook">Facebook</a>
+              </div>             
             </div>
             
           </form:form>

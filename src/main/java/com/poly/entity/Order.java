@@ -43,7 +43,7 @@ public class Order implements Serializable {
 	private Double totalPrice;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "username", referencedColumnName = "username")
+	@JoinColumn(name = "userId", referencedColumnName = "id")
 	private User user;
 	
 	@ManyToOne

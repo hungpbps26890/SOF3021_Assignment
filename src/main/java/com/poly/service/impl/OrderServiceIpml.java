@@ -89,8 +89,8 @@ public class OrderServiceIpml implements OrderService {
 	}
 
 	@Override
-	public List<Order> findAllByUsername(String username) {
-		User user = userDAO.findById(username).get();
+	public List<Order> findAllByUsername(Long id) {
+		User user = userDAO.findById(id).get();
 		List<Order> orders = user.getOrders();
 		return orders;
 	}

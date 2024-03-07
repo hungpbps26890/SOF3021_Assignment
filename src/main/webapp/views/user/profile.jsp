@@ -25,29 +25,20 @@
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
               <h2 class="margin-bottom-30"><s:message code="pro.h2"/></h2>
               <div class="form-group">
-                <form:hidden id="username" class="form-control" placeholder="USERNAME"
-                	path="username" value="${user.username}"
+                <form:hidden id="email" class="form-control" placeholder="EMAIL"
+                	path="email" value="${user.email}"
                 />
                 <div class="mt-2">
-	              	<form:errors path="username" class="badge text-bg-danger"></form:errors>
+	              	<form:errors path="email" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
               
               <div class="form-group">
-                <form:input type="text" id="firstName" class="form-control" placeholder="FIRST NAME" 
-                	path="firstName" value="${user.firstName}"
+                <form:input type="text" id="name" class="form-control" placeholder="YOUR NAME" 
+                	path="name" value="${user.name}"
                 />
                 <div class="mt-2">
-	              	<form:errors path="firstName" class="badge text-bg-danger"></form:errors>
-	              </div>
-              </div>
-              
-              <div class="form-group">
-                <form:input type="text" id="lastName" class="form-control" placeholder="LAST NAME" 
-                	path="lastName" value="${user.lastName}"
-                />
-                <div class="mt-2">
-	              	<form:errors path="lastName" class="badge text-bg-danger"></form:errors>
+	              	<form:errors path="name" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
               
@@ -59,16 +50,7 @@
 	              	<form:errors path="phoneNumber" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
-              <div class="form-group">
-                <form:input type="text" id="email" class="form-control" placeholder="EMAIL" 
-                	path="email" value="${user.email}"
-                />
-                <div class="mt-2">
-	              	<form:errors path="email" class="badge text-bg-danger"></form:errors>
-	              </div>
-              </div>
-              
+
 			
 			<div class="mb-3">
 				<span class="text-primary">${message}</span>

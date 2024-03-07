@@ -17,11 +17,14 @@ public interface DrinkDAO extends JpaRepository<Drink, Integer> {
 	
 	List<Drink> findByCategoryAndActive(Category category, Boolean active);
 	
-	Page<Drink> findByActive(Boolean active, Pageable pageable);
+	List<Drink> findAllByActive(Boolean active, Limit limit);
 	
-	@Query("SELECT d FROM Drink d WHERE d.category = ?1 AND d.id <> ?2")
-	List<Drink> findRelatedDrink(Category category, Integer id, Limit limit);
+	@Query("SELECT d FROM Drink d WHERE d.category = ?1 AND d.id <> ?2 AND d.active = ?3")
+	List<Drink> findRelatedDrink(Category category, Integer id, Boolean active, Limit limit);
 	
 	@Query("SELECT d FROM Drink d")
 	List<Drink> findMore(Limit limit);
+	
+	@Query("SELECT d FROM Drink d WHERE d.name LIKE %?1% OR d.description LIKE %?1% OR d.category.name LIKE %?1%")
+	Page<Drink> searchByKeyword(String keyword, Pageable pageable);
 }

@@ -25,8 +25,8 @@
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
               <h2 class="margin-bottom-30"><s:message code="change.h2"/></h2>
               <div class="form-group">
-                <form:hidden id="username" class="form-control" placeholder="USERNAME"
-                	path="username" value="${user.username}"
+                <form:hidden id="email" class="form-control" placeholder="EMAIL"
+                	path="email" value="${user.email}"
                 />
               </div>
               <div class="form-group">

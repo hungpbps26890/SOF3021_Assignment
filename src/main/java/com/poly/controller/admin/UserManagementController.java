@@ -1,12 +1,9 @@
 package com.poly.controller.admin;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.poly.dao.UserDAO;
+import com.poly.entity.Role;
 import com.poly.entity.User;
+import com.poly.service.RoleService;
 import com.poly.service.UserService;
+import com.poly.utils.ParamService;
 
 import jakarta.validation.Valid;
 
@@ -29,8 +27,12 @@ public class UserManagementController {
 
 	@Autowired
 	UserService userService;
+	
 	@Autowired
-	UserDAO userDAO;
+	RoleService roleService;
+	
+	@Autowired
+	ParamService paramService;
 	
 	boolean edit = false;
 	
@@ -62,16 +64,23 @@ public class UserManagementController {
 			model.addAttribute("message", result.toString());
 			System.out.println(result.hasErrors());
 		} else {
-			if (user.getUsername() == null) {
-				model.addAttribute("message", "Add new user successfully");
-			} else {
-				model.addAttribute("message", "Update user successfully");
+			User updatedUser = userService.findByName(user.getName());
+			
+			updatedUser.setActive(user.getActive());
+			
+			boolean admin = paramService.getBoolean("admin", false);
+			
+			if (admin == true && !updatedUser.isAdmin()) {
+				updatedUser = roleService.assignUserToRole(updatedUser.getId(), 1);
+			} else if (admin == false && updatedUser.isAdmin()) {
+				updatedUser = roleService.removeUserFromRole(updatedUser.getId(), 1);
 			}
 
-			user = userService.save(user);
+			updatedUser = userService.save(updatedUser);
 
 			user = new User();
 			model.addAttribute("user", user);
+			model.addAttribute("message", "Update user successfully");
 		}
 
 		List<User> users = userService.findAll();
@@ -84,8 +93,8 @@ public class UserManagementController {
 	}
 	
 	@GetMapping(value = "admin/user", params = "btnEdit")
-	public String edit(Model model, @RequestParam("username") String username) {
-		User user = userService.findById(username);
+	public String edit(Model model, @RequestParam("id") Long id) {
+		User user = userService.findById(id);
 		model.addAttribute("user", user);
 
 		edit = true;
@@ -94,24 +103,19 @@ public class UserManagementController {
 		return "admin/user-management";
 	}
 	
-	@PostMapping("admin/user/delete/{username}")
-	public String delete(@PathVariable("username") String username) {
-		userDAO.deleteById(username);
+	@PostMapping("admin/user/delete/{id}")
+	public String delete(@PathVariable("id") Long id) {
+		userService.deleteById(id);
 
 		return "redirect:/admin/user";
 	}
 
 	@GetMapping(value = "admin/user", params = "btnDel")
-	public String deleteInline(@RequestParam("username") String username) {
-		userService.deleteById(username);
+	public String deleteInline(@RequestParam("id") Long id) {
+		userService.deleteById(id);
 
 		return "redirect:/admin/user";
 	}
 	
-	@RequestMapping("/admin/user/page")
-	public String page(Model model, @Valid @ModelAttribute("user") User user, BindingResult result, @RequestParam("page") Optional<Integer> page ) {
-		Pageable pageable = PageRequest.of(page.orElse(0), 2);
-		model.addAttribute("page", userDAO.findAll(pageable));
-		return "admin/user-management";
-	}
+
 }
