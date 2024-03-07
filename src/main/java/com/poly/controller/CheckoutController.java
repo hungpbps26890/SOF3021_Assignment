@@ -128,8 +128,15 @@ public class CheckoutController {
 
 			order.setAddress(address);
 
+<<<<<<< HEAD
 			orderService.saveOrder(cart, order);
 			if (paymentMethod.getId() == 7) {
+=======
+			orderService.saveOrder(cart, order);			
+			if (paymentMethod.getId() == 7)
+				return "redirect:/payment/create_payment";
+			if(paymentMethod.getId() == 7) {
+>>>>>>> cc4c404d445e3b096a6b692f09cc21e933df0b3e
 				return "redirect:/payment/create_payment";
 			}
 		}

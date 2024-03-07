@@ -27,10 +27,15 @@ import com.poly.utils.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+<<<<<<< HEAD
+=======
+@Controller
+>>>>>>> cc4c404d445e3b096a6b692f09cc21e933df0b3e
 @RequestMapping("/payment")
 public class PaymentController {
 	@Autowired
 	HttpServletRequest req;
+<<<<<<< HEAD
 
 	@Autowired
 	SessionService sessionService;
@@ -44,6 +49,19 @@ public class PaymentController {
 		User currentUser = sessionService.getAttribute("currentUser");
 		User user = userService.findById(currentUser.getId());
 		
+=======
+	@Autowired
+	SessionService sessionService;
+	@Autowired
+	UserService userService;
+	
+	@GetMapping("/create_payment")
+	public ModelAndView createPayment() throws UnsupportedEncodingException {
+
+		User user = sessionService.getAttribute("currentUser");
+		User curentUser = userService.findByUsername("currentUser");
+//		User user = userService.findByUsername(curentUser.getUsername());
+>>>>>>> cc4c404d445e3b096a6b692f09cc21e933df0b3e
 		double money = user.getCart().getTotalPrice();
 		String m = String.valueOf(money);
 		String m2 = m.replace(".0", "");
@@ -124,4 +142,8 @@ public class PaymentController {
 		return new ModelAndView("redirect:" + paymentUrl);
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> cc4c404d445e3b096a6b692f09cc21e933df0b3e
