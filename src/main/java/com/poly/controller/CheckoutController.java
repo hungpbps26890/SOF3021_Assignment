@@ -48,14 +48,10 @@ public class CheckoutController {
 			return "redirect:/account/login";
 		}
 
-		User user = userService.findById(currentUser.getId());
+		User user = userService.findById(currentUser.getUsername());
 		model.addAttribute("user", user);
 
 		ShoppingCart cart = user.getCart();
-		
-		if (cart.getCartItems().isEmpty()) {
-			return "redirect:/home";
-		}
 
 		model.addAttribute("cart", cart);
 
@@ -70,12 +66,7 @@ public class CheckoutController {
 
 	@PostMapping("checkout")
 	public String checkout(@ModelAttribute("order") Order order, @RequestParam("addressString") String addressString,
-			@RequestParam("phoneNumber") String phoneNumber,
 			Model model) {
-		System.out.println("test");
-		if (phoneNumber.equals("")) {
-			return "redirect:/account/profile";
-		}
 
 		if (addressString.equals("")) {
 			model.addAttribute("addressErrorMessage", "Please enter delivery address");
@@ -86,8 +77,9 @@ public class CheckoutController {
 				return "redirect:/account/login";
 			}
 
-			User user = userService.findById(currentUser.getId());
+			User user = userService.findById(currentUser.getUsername());
 			model.addAttribute("user", user);
+			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -107,8 +99,9 @@ public class CheckoutController {
 				return "redirect:/account/login";
 			}
 
-			User user = userService.findById(currentUser.getId());
+			User user = userService.findById(currentUser.getUsername());
 			model.addAttribute("user", user);
+			sessionService.setAttribute("currentUser", user);
 
 			ShoppingCart cart = user.getCart();
 
@@ -128,15 +121,10 @@ public class CheckoutController {
 
 			order.setAddress(address);
 
-<<<<<<< HEAD
+
 			orderService.saveOrder(cart, order);
-			if (paymentMethod.getId() == 7) {
-=======
-			orderService.saveOrder(cart, order);			
-			if (paymentMethod.getId() == 7)
-				return "redirect:/payment/create_payment";
+
 			if(paymentMethod.getId() == 7) {
->>>>>>> cc4c404d445e3b096a6b692f09cc21e933df0b3e
 				return "redirect:/payment/create_payment";
 			}
 		}
@@ -147,17 +135,17 @@ public class CheckoutController {
 	@GetMapping("order")
 	public String getOrder(Model model) {
 		User currentUser = sessionService.getAttribute("currentUser");
-
+		
 		if (currentUser == null) {
 			return "redirect:/account/login";
 		}
 
-		User user = userService.findById(currentUser.getId());
+		User user = userService.findById(currentUser.getUsername());
 
 		ShoppingCart cart = user.getCart();
 		sessionService.setAttribute("totalItems", cart.getTotalItems());
 
-		List<Order> orders = orderService.findAllByUsername(user.getId());
+		List<Order> orders = orderService.findAllByUsername(user.getUsername());
 		
 		orders.forEach(order -> System.out.println(order.toString()));
 		

@@ -1,6 +1,5 @@
 package com.poly.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,48 +18,32 @@ public class ReportServiceImpl implements ReportService {
 	ReportDAO reportDAO;
 	
 	@Override
-	public Page<Report> findByCreateDate(LocalDate localDate, boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByCreateDate(localDate, paymentStatus, pageable);
-	}
-	
-	@Override
-	public Page<Report> findAll(boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findAll(paymentStatus, pageable);
+	public Page<Report> findAll(Pageable pageable) {
+		return reportDAO.findAll(pageable);
 	}
 
 	@Override
-	public Page<Report> findByDay(String day, boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByDay(day, paymentStatus, pageable);
+	public Page<Report> findByDay(String day, Pageable pageable) {
+		return reportDAO.findByDay(day, pageable);
 	}
 
 	@Override
-	public Page<Report> findByMonth(String month, boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByMonth(month, paymentStatus, pageable);
+	public Page<Report> findByMonth(String month, Pageable pageable) {
+		return reportDAO.findByMonth(month, pageable);
 	}
 
 	@Override
-	public Page<Report> findByYear(String year, boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByYear(year, paymentStatus, pageable);
+	public Page<Report> findByYear(String year, Pageable pageable) {
+		return reportDAO.findByYear(year, pageable);
 	}
 
 	@Override
-	public Page<Report> findByMonthAndYear(String month, String year, boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByMonthAndYear(month, year, paymentStatus, pageable);
+	public Page<Report> findByMonthAndYear(String month, String year, Pageable pageable) {
+		return reportDAO.findByMonthAndYear(month, year, pageable);
 	}
 
 	@Override
-	public Page<Report> findByDayAndMonthAndYear(String day, String month, String year, boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByDayAndMonthAndYear(day, month, year, paymentStatus, pageable);
+	public Page<Report> findByDayAndMonthAndYear(String day, String month, String year, Pageable pageable) {
+		return reportDAO.findByDayAndMonthAndYear(day, month, year, pageable);
 	}
-	
-	@Override
-	public Page<Report> findByDrink(boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByDrink(paymentStatus, pageable);
-	}
-	
-	@Override
-	public Page<Report> findByDrink(LocalDate fromDate, LocalDate toDate, boolean paymentStatus, Pageable pageable) {
-		return reportDAO.findByDrink(fromDate, toDate, paymentStatus, pageable);
-	}
-
 }

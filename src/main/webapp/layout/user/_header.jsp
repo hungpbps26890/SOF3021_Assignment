@@ -39,7 +39,7 @@
 
 		               	<li><a href="/order"><s:message code="nav.order"/></a></li>
                 		
-                		<li><a href="/account/profile"><s:message code="nav.welcome"/>, ${sessionScope.currentUser.name}</a></li>
+                		<li><a href="/account/profile"><s:message code="nav.welcome"/>, ${sessionScope.currentUser.firstName}</a></li>
                 		<c:if test="${currentUser.admin}">
 						<li><a href="http://localhost:8080/admin/drink">Dashboard</a></li>
 						</c:if>

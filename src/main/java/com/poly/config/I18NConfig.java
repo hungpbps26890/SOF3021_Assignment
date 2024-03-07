@@ -14,13 +14,14 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
 public class I18NConfig implements WebMvcConfigurer {
-	@Bean("messageSource")
-	public MessageSource getMessageSource() {
-		ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-		ms.setBasenames("classpath:i18n/home");
-		ms.setDefaultEncoding("utf-8");
-		return ms;
-	}
+	// chuyển đổi ngôn ngữ
+		@Bean("messageSource")
+		public MessageSource getMessageSource() {
+			ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
+			ms.setBasenames("classpath:i18n/layout", "classpath:i18n/home");
+			ms.setDefaultEncoding("utf-8");
+			return ms;
+		}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

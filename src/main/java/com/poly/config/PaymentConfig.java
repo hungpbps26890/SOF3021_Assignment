@@ -10,17 +10,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+/**
+ *
+ * @author CTT VNPAY
+ */
+
 public class PaymentConfig {
+	
+	
 	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "http://localhost:8080/order";
-    public static String vnp_TmnCode = "YTW40XHE";
-    public static String secretKey = "KPHCCACUBHLKCPGRQSFYQPKGLYRVJEEE";
+
+	public static String vnp_ReturnUrl = "http://localhost:8080/order"; //sửa thằng này về url order detail
+    public static String vnp_TmnCode = "GOKFBPSC";	//mã nằm trong gmail
+    public static String secretKey = "MGXKTEYALISZYBYLSPEAILHHWSCFTKIC"; //mã nằm trong gmail
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {
@@ -125,5 +132,4 @@ public class PaymentConfig {
         }
         return sb.toString();
     }
-
 }

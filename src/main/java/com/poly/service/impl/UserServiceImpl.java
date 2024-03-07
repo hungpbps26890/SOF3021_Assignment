@@ -1,12 +1,13 @@
 package com.poly.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.poly.dao.UserDAO;
@@ -39,38 +40,46 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User findById(Long id) {
+	public User findById(String id) {
 		return userDAO.findById(id).get();
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(String id) {
 		User user = findById(id);
 		user.setActive(false);
 		save(user);
 	}
 
+//	@Override
+//	public void delete(User entity) {
+//		User user = findById(entity.getUsername());
+//		user.setActive(false);
+//		save(user);
+//	}
 	@Override
 	public void delete(User entity) {
-		User user = findById(entity.getId());
-		user.setActive(false);
-		save(user);
+		save(entity);
 	}
 
 	@Override
-	public User findByEmail(String email) {
-		Optional<User> user = userDAO.findByEmail(email);
-		if (!user.isPresent()) {
-			return null;
-		}
-		return user.get();
+	public Page<User> findByUsernameContainingOrFirstNameContainingOrLastNameContaining(String username, String firstName, String lastName, Pageable pageable) {
+		return userDAO.findByUsernameContainingOrFirstNameContainingOrLastNameContaining(username, firstName, lastName, pageable);
+	}
+	
+	@Override
+	public Page<User> findByPhoneNumberContaining(String phonenumber, Pageable pageable) {
+		return userDAO.findByPhoneNumberContaining(phonenumber, pageable);
 	}
 
 	@Override
-	public User findByName(String name) {
-		return userDAO.findByName(name);
+	public Page<User> findByEmailContaining(String email, Pageable pageable) {
+		return userDAO.findByEmailContaining(email, pageable);
 	}
 
-
+	@Override
+	public User findByUsername(String id) {
+		return userDAO.findById(id).orElse(null);
+	}
 	
 }

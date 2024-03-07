@@ -27,14 +27,29 @@
 								<form:form action="/admin/user" class="templatemo-login-form"
 									modelAttribute="user" method="post"
 									enctype="multipart/form-data">
+									<div class="form-group">
+										<label for="name">Username</label>
+										<form:input type="text" path="username" class="form-control"
+											id="name" value="${user.username}" />
+									</div>
 									<div class="row">
-										<div class="form-group col-lg-12">
+										<div class="form-group col-lg-6">
 											<label for="name">First Name</label>
-											<form:input type="text" path="name" class="form-control"
-												id="name" placeholder="Enter name"
-												value="${user.name}" />
+											<form:input type="text" path="firstName" class="form-control"
+												id="name" placeholder="Enter firstname"
+												value="${user.firstName}" />
 											<div class="mt-2">
-												<form:errors path="name" class="text-danger" />
+												<form:errors path="firstName" class="text-danger" />
+											</div>
+										</div>
+
+										<div class="form-group col-lg-6">
+											<label for="name">Last Name</label>
+											<form:input type="text" path="lastName" class="form-control"
+												id="price" placeholder="Enter lastname"
+												value="${user.lastName}" />
+											<div class="mt-2">
+												<form:errors path="lastName" class="text-danger" />
 											</div>
 										</div>
 									</div>
@@ -62,7 +77,7 @@
 										<label for="price">Password</label>
 										<form:input type="password" path="password"
 											class="form-control" id="price" placeholder="Enter email"
-											value="${user.password}"/>
+											value="${user.password}" />
 										<div class="mt-2">
 											<form:errors path="password" class="text-danger"></form:errors>
 										</div>
@@ -100,7 +115,7 @@
 									<div class="form-group">
 										<a href="/admin/user" class="btn templatemo-blue-button">New</a>
 										<button type="submit" class="btn templatemo-blue-button">Save</button>
-										<button formaction="/admin/user/delete/${user.name}"
+										<button formaction="/admin/user/delete/${user.username}"
 											class="btn templatemo-blue-button btn-bg-danger ${edit ? '' : 'disabled'}">Delete</button>
 									</div>
 								</form:form>
@@ -117,7 +132,7 @@
 							class="table table-striped table-bordered templatemo-user-table">
 							<thead>
 								<tr>
-									<td><a href="" class="white-text templatemo-sort-by">
+									<td><a href="" class="white-text templatemo-sort-by">Username
 											<span class="caret"></span>
 									</a></td>
 									<td><a href="" class="white-text templatemo-sort-by">Name
@@ -140,16 +155,17 @@
 							</thead>
 							<c:forEach var="item" items="${page.content}">
 								<tr>
-									<td>${item.name}</td>
+									<td>${item.username}</td>
+									<td>${item.firstName} ${item.lastName}</td>
 									<td>${item.phoneNumber}</td>
 									<td>${item.email}</td>
 									<td>${item.admin ? 'Admin' : 'User'}</td>
 									<td>${item.active ? 'Active' : 'Inactive'}</td>
 									<td><a
-										href="/admin/user?btnEdit=&name=${item.name}"
+										href="/admin/user?btnEdit=&username=${item.username}"
 										class="templatemo-edit-btn">Edit</a></td>
 									<td><a
-										href="/admin/user?btnDel=&=${item.name}"
+										href="/admin/user?btnDel=&username=${item.username}"
 										class="templatemo-edit-btn">Delete</a></td>
 								</tr>
 							</c:forEach>

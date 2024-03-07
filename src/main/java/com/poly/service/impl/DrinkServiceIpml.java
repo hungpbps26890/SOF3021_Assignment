@@ -65,8 +65,8 @@ public class DrinkServiceIpml implements DrinkService{
 	}
 
 	@Override
-	public List<Drink> findRelatedDrink(Category category, Integer id, Boolean active, Limit limit) {
-		return drinkDAO.findRelatedDrink(category, id, active, limit);
+	public List<Drink> findRelatedDrink(Category category, Integer id, Limit limit) {
+		return drinkDAO.findRelatedDrink(category, id, limit);
 	}
 
 	@Override
@@ -76,29 +76,25 @@ public class DrinkServiceIpml implements DrinkService{
 
 	@Override
 	public List<Drink> findByCategoryAndActive(Category category, Boolean active) {
-	
+		// TODO Auto-generated method stub
 		return drinkDAO.findByCategoryAndActive(category, active);
 	}
 
 	@Override
-	public List<Drink> findAllByActive(Boolean active, Limit limit) {
-		
-		return drinkDAO.findAllByActive(active, limit);
+	public Page<Drink> findByActive(Boolean active, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return drinkDAO.findByActive(active, pageable);
 	}
 
-	@Override
-<<<<<<< HEAD
-	public Page<Drink> searchByKeyword(String keyword, Pageable pageable) {
-		
-		return drinkDAO.searchByKeyword(keyword, pageable);
-	}
-=======
 	public List<Drink> findByActive(boolean active) {
 		// TODO Auto-generated method stub
 		return drinkDAO.findByActive(active);
 	}
 
->>>>>>> cc4c404d445e3b096a6b692f09cc21e933df0b3e
-	
+	@Override
+	public List<Drink> findRelatedDrink(Category category, Integer id, Boolean active, Limit limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -25,11 +25,11 @@
             <div class="col-md-6 col-md-offset-3" style="border-radius: 10px; background-color: white; padding: 30px">
               <h2 class="margin-bottom-30"><s:message code="reg.h2"/></h2>
               <div class="form-group">
-                <form:input type="text" id="email" class="form-control" placeholder="Email" 
-                	path="email"
+                <form:input type="text" id="username" class="form-control" placeholder="USERNAME" 
+                	path="username"
                 />
                 <div class="mt-2">
-	              	<form:errors path="email" class="badge text-bg-danger"></form:errors>
+	              	<form:errors path="username" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
               <div class="form-group">
@@ -49,20 +49,35 @@
 	              </div>
               </div>
               <div class="form-group">
-                <form:input type="text" id="name" class="form-control" placeholder="YOUR NAME" 
-                	path="name"
+                <form:input type="text" id="firstName" class="form-control" placeholder="FIRST NAME" 
+                	path="firstName"
                 />
                 <div class="mt-2">
-	              	<form:errors path="name" class="badge text-bg-danger"></form:errors>
+	              	<form:errors path="firstName" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
-              
+              <div class="form-group">
+                <form:input type="text" id="lastName" class="form-control" placeholder="LAST NAME" 
+                	path="lastName"
+                />
+                <div class="mt-2">
+	              	<form:errors path="lastName" class="badge text-bg-danger"></form:errors>
+	              </div>
+              </div>
               <div class="form-group">
                 <form:input type="text" id="phoneNumber" class="form-control" placeholder="PHONE NUMBER" 
                 	path="phoneNumber"
                 />
                 <div class="mt-2">
 	              	<form:errors path="phoneNumber" class="badge text-bg-danger"></form:errors>
+	              </div>
+              </div>
+              <div class="form-group">
+                <form:input type="text" id="email" class="form-control" placeholder="EMAIL" 
+                	path="email"
+                />
+                <div class="mt-2">
+	              	<form:errors path="email" class="badge text-bg-danger"></form:errors>
 	              </div>
               </div>
 			

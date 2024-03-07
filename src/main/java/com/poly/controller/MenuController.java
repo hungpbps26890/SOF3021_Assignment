@@ -3,11 +3,10 @@ package com.poly.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
+
 import org.springframework.data.domain.Limit;
-=======
 import org.springframework.data.domain.Page;
->>>>>>> cc4c404d445e3b096a6b692f09cc21e933df0b3e
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +41,7 @@ public class MenuController {
 	
 	@ModelAttribute("drinks")
 	public List<Drink> getDrinks() {
-		return drinkService.findAllByActive(true, Limit.of(20));
+		return drinkService.findAll();
 	}
 	
 	@GetMapping("menu/category/{id}")

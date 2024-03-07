@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class CreateDate {
-	
-	private CreateDate1 createDate1;
-	private CreateDate2 createDate2;
+	private String day;
+	private String month;
+	private String year;
 	
 }

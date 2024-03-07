@@ -1,11 +1,7 @@
 package com.poly.controller.admin;
 
 import java.net.http.HttpRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +43,6 @@ public class ReportController {
 	SessionService session;
 	
 	Pageable pageable = PageRequest.of(0, 10);
-	boolean isPayment = true;
 	
 	@RequestMapping("/admin/report/index")
 	public String index(Model model) {
@@ -65,62 +60,44 @@ public class ReportController {
 	
 	@RequestMapping("/admin/report")
 	public String get(Model model, @ModelAttribute("createDate") CreateDate cd) {
-		//model.addAttribute("counts", reportService.findByDrink(fromDate, toDate, pageable));
-		model.addAttribute("pages", reportService.findAll(true, pageable));
+		model.addAttribute("pages", reportService.findAll(pageable));
 		model.addAttribute("printExcel", false);
 		return "forward:/admin/report/index";
 	}
 
 	@PostMapping("/admin/report/search")
 	public String search(Model model, HttpServletRequest request,
-			@ModelAttribute("createDate") CreateDate createDate, 
-			@RequestParam("payment") String payment) {
-		isPayment = payment.equalsIgnoreCase("true") ? false : true;
+			@ModelAttribute("createDate") CreateDate createDate) {
 		
-		String day1 = createDate.getCreateDate1().getDay();
-		String day2 = createDate.getCreateDate2().getDay();
-		String month1 = createDate.getCreateDate1().getMonth();
-		String month2 = createDate.getCreateDate2().getMonth();
-		String year1 = createDate.getCreateDate1().getYear();
-		String year2 = createDate.getCreateDate2().getYear();
-		
+		String day = createDate.getDay();
+		String month = createDate.getMonth();
+		String year = createDate.getYear();
 		StringBuilder date = new StringBuilder();
-		date.append(year1).append(" ").append(month1).append(" ").append(day1).toString();
+		date.append(day).append(" ").append(month).append(" ").append(year);
 		
-		if (day1.equals("1") && month1.equals("1") && year1.equals("1") && day2.equals("1") && month2.equals("1") && year2.equals("1")) {
-			model.addAttribute("pages", reportService.findAll(isPayment, pageable));
-			model.addAttribute("isDrink", false);
-		} else if (!day2.equals("1") || !month2.equals("1") || !year2.equals("1")) {
-			date.append(year2).append(" ").append(month2).append(" ").append(day2).toString();
-			LocalDate fromDate = LocalDate.of(Integer.parseInt(year1), Integer.parseInt(month1), Integer.parseInt(day1));
-			LocalDate toDate = LocalDate.of(Integer.parseInt(year2), Integer.parseInt(month2), Integer.parseInt(day2));
-			model.addAttribute("pages", reportService.findByDrink(fromDate, toDate, isPayment, pageable));
-			model.addAttribute("isDrink", true);
-		} else {
-			if (!day1.equals("1") && !month1.equals("1") && !year1.equals("1"))
-				model.addAttribute("pages", reportService.findByDayAndMonthAndYear(day1, month1, year1, isPayment, pageable));
-			else if (!month1.equals("1") && !year1.equals("1"))
-				model.addAttribute("pages", reportService.findByMonthAndYear(month1, year1, isPayment, pageable));
-			else if (!year1.equals("1"))
-				model.addAttribute("pages", reportService.findByYear(year1, isPayment, pageable));
-			else if (!month1.equals("1"))
-				model.addAttribute("pages", reportService.findByMonth(month1, isPayment, pageable));
-			else if (!day1.equals("1"))
-				model.addAttribute("pages", reportService.findByDay(day1, isPayment, pageable));
-			model.addAttribute("isDrink", false);
+		if (day.equals("0") && month.equals("0") && year.equals("0"))
+			model.addAttribute("pages", reportService.findAll(pageable));
+		else {
+			if (!day.equals("0") && !month.equals("0") && !year.equals("0"))
+				model.addAttribute("pages", reportService.findByDayAndMonthAndYear(day, month, year, pageable));
+			else if (!month.equals("0") && !year.equals("0"))
+				model.addAttribute("pages", reportService.findByMonthAndYear(month, year, pageable));
+			else if (!year.equals("0"))
+				model.addAttribute("pages", reportService.findByYear(year, pageable));
+			else if (!month.equals("0"))
+				model.addAttribute("pages", reportService.findByMonth(month, pageable));
+			else if (!day.equals("0"))
+				model.addAttribute("pages", reportService.findByDay(day, pageable));
 		}
 		
 		Page<Report> pages = (Page<Report>) model.getAttribute("pages");
-		boolean isDrink = (boolean) model.getAttribute("isDrink");
 		
-		ExcelService.exportReportExcel(date.toString(), pages.getContent(), isDrink); 
+		ExcelService.exportReportExcel(date.toString(), pages.getContent());
 		
-		session.setAttribute("day1", day1);
-		session.setAttribute("day2", day2);
-		session.setAttribute("month1", month1);
-		session.setAttribute("month2", month2);
-		session.setAttribute("year1", year1);
-		session.setAttribute("year2", year2);
+		session.setAttribute("day", day);
+		session.setAttribute("month", month);
+		session.setAttribute("year", year);
+		
 		
 		model.addAttribute("printExcel", true);
 		return "forward:/admin/report/index";
@@ -129,44 +106,28 @@ public class ReportController {
 	@GetMapping("/admin/report/page")
 	public String page(Model model, @ModelAttribute("createDate") CreateDate createDate,
 			@RequestParam("p") Optional<Integer> p) {
-		String day1 = session.getAttribute("day1");
-		String day2 = session.getAttribute("day2");
-		String month1 = session.getAttribute("month1");
-		String month2 = session.getAttribute("month2");
-		String year1 = session.getAttribute("year1");
-		String year2 = session.getAttribute("year2");
+		String day = session.getAttribute("day");
+		String month = session.getAttribute("month");
+		String year = session.getAttribute("year");
 		pageable = PageRequest.of(p.orElse(0), 10);
 		
-		if (day1 == null && month1 == null && year1 == null)
-			model.addAttribute("pages", reportService.findAll(isPayment, pageable));
-		else if (day1.equals("1") && month1.equals("1") && year1.equals("1"))
-			model.addAttribute("pages", reportService.findAll(isPayment, pageable));
+		if (day == null && month == null && year == null)
+			model.addAttribute("pages", reportService.findAll(pageable));
+		else if (day.equals("0") && month.equals("0") && year.equals("0"))
+			model.addAttribute("pages", reportService.findAll(pageable));
 		else {
-			if (!day1.equals("1") && !month1.equals("1") && !year1.equals("1"))
-				model.addAttribute("pages", reportService.findByDayAndMonthAndYear(day1, month1, year1, isPayment, pageable));
-			else if (!month1.equals("1") && !year1.equals("1"))
-				model.addAttribute("pages", reportService.findByMonthAndYear(month1, year1, isPayment, pageable));
-			else if (!year1.equals("1"))
-				model.addAttribute("pages", reportService.findByYear(year1, isPayment, pageable));
-			else if (!month1.equals("1"))
-				model.addAttribute("pages", reportService.findByMonth(month1, isPayment, pageable));
-			else if (!day1.equals("1"))
-				model.addAttribute("pages", reportService.findByDay(day1, isPayment, pageable));
+			if (!day.equals("0") && !month.equals("0") && !year.equals("0"))
+				model.addAttribute("pages", reportService.findByDayAndMonthAndYear(day, month, year, pageable));
+			else if (!month.equals("0") && !year.equals("0"))
+				model.addAttribute("pages", reportService.findByMonthAndYear(month, year, pageable));
+			else if (!year.equals("0"))
+				model.addAttribute("pages", reportService.findByYear(year, pageable));
+			else if (!month.equals("0"))
+				model.addAttribute("pages", reportService.findByMonth(month, pageable));
+			else if (!day.equals("0"))
+				model.addAttribute("pages", reportService.findByDay(day, pageable));
 		}
 		
-		return "forward:/admin/report/index";
-	}
-	
-	@PostMapping("/admin/report/count")
-	public String count(Model model, @RequestParam("isDrink") String drink, @ModelAttribute("createDate") CreateDate cd) {
-		boolean isDrink = drink.equals("true") ? false : true;
-		model.addAttribute("isDrink", isDrink);
-		model.addAttribute("pages", (isDrink ? reportService.findByDrink(isPayment, pageable) 
-											: reportService.findAll(isPayment, pageable)));
-		
-		session.setAttribute("day", 1);
-		session.setAttribute("month", 1);
-		session.setAttribute("year", 1);
 		return "forward:/admin/report/index";
 	}
 	

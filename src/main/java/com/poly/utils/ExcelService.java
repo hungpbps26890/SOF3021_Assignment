@@ -1,9 +1,12 @@
 package com.poly.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,17 +19,14 @@ import com.poly.entity.Report;
 
 public class ExcelService {
 	
-	public static void exportReportExcel(String sheetName, List<Report> reports, boolean isDrink) {
+	public static void exportReportExcel(String sheetName, List<Report> reports) {
 		try {
-			String columnName = isDrink ? "Drink Name" : "Create Date";
-			
 			Workbook workbook = new XSSFWorkbook();
 			Sheet sheet = workbook.createSheet(sheetName);
 			
-			
 			Row row = sheet.createRow(0);
 			row.createCell(0).setCellValue("#");
-			row.createCell(1).setCellValue(columnName);
+			row.createCell(1).setCellValue("Create Date");
 			row.createCell(2).setCellValue("Quantity");
 			row.createCell(3).setCellValue("Total Price");
 			
@@ -34,10 +34,7 @@ public class ExcelService {
 				Report r = reports.get(i);
 				row = sheet.createRow(i + 1);
 				row.createCell(0).setCellValue(r.getId() + 1);
-				if (!isDrink)
-					row.createCell(1).setCellValue(r.getCreateDate().toString());
-				else
-					row.createCell(1).setCellValue(r.getDrinkName().toString());
+				row.createCell(1).setCellValue(r.getCreateDate().toString());
 				row.createCell(2).setCellValue(r.getQuantity());
 				row.createCell(3).setCellValue(r.getTotalPrice());
 			}

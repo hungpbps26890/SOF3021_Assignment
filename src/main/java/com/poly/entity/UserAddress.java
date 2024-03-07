@@ -33,7 +33,7 @@ public class UserAddress implements Serializable {
 	private Boolean isDefault;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "username")
 	private User user;
 	
 	@ManyToOne

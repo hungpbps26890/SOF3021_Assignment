@@ -26,7 +26,7 @@
             <div class="tm-hr-container"><hr class="tm-hr"></div>
           </div>
           <div class="col-lg-12 tm-popular-items-container">
-            <c:forEach var="drink" items="${drinks}">
+            <c:forEach var="drink" items="${drinks.content}">
             	<%@ include file="/layout/user/_drink-item.jsp" %>
             </c:forEach>
           </div>

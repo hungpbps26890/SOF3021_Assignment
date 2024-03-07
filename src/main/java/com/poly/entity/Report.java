@@ -23,8 +23,6 @@ public class Report {
 	private LocalDateTime createDate;
 	private Long quantity;
 	private Double totalPrice;
-	private String drinkName;
-	
 	
 	public Report(LocalDateTime createDate, Long quantity, Double totalPrice) {
 		super();
@@ -35,14 +33,8 @@ public class Report {
 	
 	public Report(Integer year, Long quantity, Double totalPrice) {
 		super();
-		this.createDate = LocalDateTime.of(year, 1, 1, 0, 0);
-		this.quantity = quantity;
-		this.totalPrice = totalPrice;
-	}
-	
-	public Report(String drinkName, Long quantity, Double totalPrice) {
-		super();
-		this.drinkName = drinkName;
+		LocalDateTime createDate = LocalDateTime.of(year, 1, 1, 0, 0);
+		this.createDate = createDate;
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
 	}
